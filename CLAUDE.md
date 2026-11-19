@@ -5,6 +5,8 @@ Espezifikazio osoa: `../HabeLab_argibideak.md`.
 - Barne-unitateak: N, m. Aritmetika: arrazional zehatzak (src/core/rational.ts).
 - Zeinu-konbentzioa: V+ = ezkerreko erresultantea gorantz; M+ = beheko zuntza trakzioan;
   q>0 beherantz; M₀>0 erloju-orratzen noranzkoan. dV/dx=-q, dM/dx=V.
+- Landaketaren erreakzio-momentua (M_landaketa): erloju-orratzen noranzkoan +, M₀-ren konbentzio bera
+  (erabiltzaileak berretsia, 2026-11-19). Ezkerrean = M(0⁺); eskuinean = −M(L⁻).
 - Bi ebazle independente (A analitikoa, B zenbakizkoa) + Python orakulua. Bat ez badatoz → errorea.
 - Golden testak (tests/golden) ez dira inoiz aldatzen inplementazioari egokitzeko.
 - Zuzenketan ez da AArik erabiltzen.
