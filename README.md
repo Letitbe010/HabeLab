@@ -14,6 +14,17 @@ npm run lint && npm run typecheck
 npm run build
 ```
 
+### Python orakulua / Oráculo Python (SymPy)
+
+```bash
+python -m venv tools/oracle/.venv
+tools/oracle/.venv/Scripts/python -m pip install -r tools/oracle/requirements.txt   # Windows
+tools/oracle/.venv/Scripts/python tools/oracle/beams.py tools/oracle/out/oracle.json tests/golden/golden.json tests/oracle/random-beams.json
+ORACLE_REQUIRED=1 npm run oracle
+```
+
+(`npm run oracle:py` CIrako da: `python`-ek SymPy instalatuta izan behar du. / `npm run oracle:py` es para CI: `python` debe tener SymPy.)
+
 ## Zeinu-konbentzioa / Convenio de signos
 
 - x: ezkerreko muturretik eskuinera / de izquierda a derecha.

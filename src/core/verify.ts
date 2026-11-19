@@ -10,7 +10,7 @@
 
 import type { Beam } from './model';
 import { runChecks } from './checks';
-import { extremes } from './keyPoints';
+import { extremes, keyPoints } from './keyPoints';
 import { type AnalyticSolution, solveAnalytic } from './solverAnalytic';
 import { type NumericSolution, nodeIndex, numericExtremes, solveNumeric } from './solverNumeric';
 import { toNumber } from './rational';
@@ -57,6 +57,21 @@ export function compareAB(a: AnalyticSolution, b: NumericSolution): string[] {
   }
   if (!near(b.endV, 0, Vs)) f.push(`B: V(L⁺) = ${b.endV}`);
   if (!near(b.endM, 0, Ms)) f.push(`B: M(L⁺) = ${b.endM}`);
+  // Every interior V = 0 point of A: B's V must change sign there and B's M must agree.
+  for (const z of keyPoints(a).filter((k) => k.tags.includes('shear-zero'))) {
+    const x = z.x.value;
+    let i = b.xs.findIndex((xi) => xi > x) - 1; // cell [xs[i], xs[i+1]) containing x
+    if (i < 0) i = b.xs.length - 2;
+    const x0 = b.xs[i]!;
+    const h = b.xs[i + 1]! - x0;
+    const t = x - x0;
+    const qa = b.qR[i]!;
+    const k = (b.qL[i + 1]! - qa) / h;
+    const Vx = b.Vr[i]! - qa * t - (k * t * t) / 2;
+    const Mx = b.Mr[i]! + b.Vr[i]! * t - (qa * t * t) / 2 - (k * t * t * t) / 6;
+    if (!near(Vx, 0, Vs)) f.push(`V = 0 at x = ${x} (A), but B gives V = ${Vx}`);
+    if (!near(Mx, z.Ml.value, Ms)) f.push(`M at V = 0, x = ${x}: A = ${z.Ml.value}, B = ${Mx}`);
+  }
   const eb = numericExtremes(b);
   if (!near(e.Mmax.value, eb.Mmax, Ms)) f.push(`Mmax: A = ${e.Mmax.value}, B = ${eb.Mmax}`);
   if (!near(e.Mmin.value, eb.Mmin, Ms)) f.push(`Mmin: A = ${e.Mmin.value}, B = ${eb.Mmin}`);

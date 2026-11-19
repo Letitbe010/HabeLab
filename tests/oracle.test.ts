@@ -16,7 +16,7 @@ import type { Beam, Exercise, ExerciseLoad } from '../src/core/model';
 import * as R from '../src/core/rational';
 import { exerciseToBeam } from '../src/core/units';
 import { solveAnalytic } from '../src/core/solverAnalytic';
-import { extremes } from '../src/core/keyPoints';
+import { extremes, keyPoints } from '../src/core/keyPoints';
 import { verifyBeam } from '../src/core/verify';
 import { beamArb } from './arbitraries';
 
@@ -60,6 +60,7 @@ if (process.env.GEN_ORACLE_CASES === '1') {
 interface OracleResult {
   reactions: Record<string, { R: string; M?: string }>;
   points: { x: string; Vl: string; Vr: string; Ml: string; Mr: string }[];
+  shearZeros: { x: string; M: string; xExact: string | null; MExact: string | null }[];
   Mmax: { value: string; x: string; exact: string | null };
   Mmin: { value: string; x: string; exact: string | null };
 }
@@ -96,6 +97,18 @@ describe('oracle (SymPy) = solver A = solver B', () => {
     expect(a.breakpoints.map((b) => [S(b.x), S(b.Vl), S(b.Vr), S(b.Ml), S(b.Mr)])).toEqual(
       o!.points.map((p) => [p.x, p.Vl, p.Vr, p.Ml, p.Mr]),
     );
+    // Every interior V = 0 point (local extremum of M), not only the global one.
+    const zs = keyPoints(a).filter((k) => k.tags.includes('shear-zero'));
+    const L = R.toNumber(a.beam.length);
+    const Mscale = Math.max(1, ...zs.map((z) => Math.abs(z.Ml.value)), ...o!.shearZeros.map((z) => Math.abs(Number(z.M))));
+    expect(zs.length, 'number of interior V = 0 points').toBe(o!.shearZeros.length);
+    zs.forEach((z, i) => {
+      const oz = o!.shearZeros[i]!;
+      if (z.x.exact && oz.xExact) expect(S(z.x.exact)).toBe(oz.xExact);
+      if (z.Ml.exact && oz.MExact) expect(S(z.Ml.exact)).toBe(oz.MExact);
+      expect(Math.abs(z.x.value - Number(oz.x))).toBeLessThanOrEqual(1e-9 * L);
+      expect(Math.abs(z.Ml.value - Number(oz.M))).toBeLessThanOrEqual(1e-9 * Mscale);
+    });
     const e = extremes(a);
     for (const [mine, theirs] of [
       [e.Mmax, o!.Mmax],

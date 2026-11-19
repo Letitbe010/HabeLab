@@ -6,7 +6,8 @@ import { exerciseToBeam } from '../src/core/units';
 import { solveAnalytic } from '../src/core/solverAnalytic';
 import { compareAB, verifyBeam } from '../src/core/verify';
 import { solveNumeric } from '../src/core/solverNumeric';
-import { beamArb } from './arbitraries';
+import { beamArb, beamArbWide } from './arbitraries';
+import { runChecks } from '../src/core/checks';
 
 const cases = (golden as { cases: { id: string; exercise: Exercise }[] }).cases;
 
@@ -35,6 +36,18 @@ describe('solver B vs A on random beams (spec §9.4)', () => {
         expect(verifyBeam(b).failures).toEqual([]);
       }),
       { numRuns: 300 },
+    );
+  });
+});
+
+describe('beyond the generator limits (twelfths of a metre, L ≤ 20 m, |loads| ≤ 1e6)', () => {
+  it('2 000 wide random beams: checks pass and A = B', () => {
+    fc.assert(
+      fc.property(beamArbWide, (b) => {
+        expect(runChecks(solveAnalytic(b)).failures).toEqual([]);
+        expect(verifyBeam(b, 2000).failures).toEqual([]);
+      }),
+      { numRuns: 2000 },
     );
   });
 });

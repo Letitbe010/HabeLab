@@ -163,6 +163,7 @@ def solve_beam(ex):
         if i < len(points) - 1:
             cands_M.append((p["Mr"], p["x"]))
     t = sp.Symbol("t", real=True)
+    zeros = []  # interior points where V changes sign: (x, M)
     for a, b in zip(xs[:-1], xs[1:]):
         # symbolic V(t), M(t) on the open segment (a, b): any interior t is a 'left' section
         Vt, Mt = section_symbolic(reactions, loads, t, a)
@@ -171,7 +172,9 @@ def solve_beam(ex):
                 # only sign changes are extrema
                 eps = (b - a) / 10**9
                 if sp.sign(Vt.subs(t, root - eps)) != sp.sign(Vt.subs(t, root + eps)):
-                    cands_M.append((sp.simplify(Mt.subs(t, root)), root))
+                    m_root = sp.simplify(Mt.subs(t, root))
+                    cands_M.append((m_root, root))
+                    zeros.append((root, m_root))
     Mmax = max(cands_M, key=lambda c: (float(c[0]), -float(c[1])))
     Mmin = min(cands_M, key=lambda c: (float(c[0]), float(c[1])))
 
@@ -180,6 +183,7 @@ def solve_beam(ex):
     return {
         "reactions": {k: {"R": S(v["R"]), **({"M": S(v["M"])} if v["M"] is not None else {})} for k, v in reactions.items()},
         "points": [{"x": S(p["x"]), "Vl": S(p["Vl"]), "Vr": S(p["Vr"]), "Ml": S(p["Ml"]), "Mr": S(p["Mr"])} for p in points],
+        "shearZeros": [{"x": F(z[0]), "M": F(z[1]), "xExact": S(z[0]), "MExact": S(z[1])} for z in sorted(zeros, key=lambda z: float(z[0]))],
         "Mmax": {"value": F(Mmax[0]), "x": F(Mmax[1]), "exact": S(Mmax[0])},
         "Mmin": {"value": F(Mmin[0]), "x": F(Mmin[1]), "exact": S(Mmin[0])},
     }

@@ -76,3 +76,35 @@ export function mirrorBeam(b: Beam): Beam {
     }),
   };
 }
+
+/**
+ * Beyond the generator's limits (spec §9.4 "eta haratago ere"): positions on twelfths of a
+ * metre (not representable exactly in binary floats), L up to 20 m, magnitudes up to 1e6,
+ * closely spaced events. Stresses B's float node matching and the grid merge.
+ */
+export const beamArbWide: fc.Arbitrary<Beam> = fc.integer({ min: 6, max: 240 }).chain((L12) => {
+  const L = R.q(L12, 12);
+  const p = fc.integer({ min: 0, max: L12 }).map((k) => R.q(k, 12));
+  const mag = fc.integer({ min: -1_000_000, max: 1_000_000 }).filter((k) => k !== 0).map((k) => R.q(k));
+  const range = fc
+    .tuple(fc.integer({ min: 0, max: L12 }), fc.integer({ min: 0, max: L12 }))
+    .filter(([a, b]) => a !== b)
+    .map(([a, b]) => [R.q(Math.min(a, b), 12), R.q(Math.max(a, b), 12)] as const);
+  const load: fc.Arbitrary<Load> = fc.oneof(
+    fc.record({ kind: fc.constant('point' as const), x: p, F: mag }),
+    fc.record({ kind: fc.constant('moment' as const), x: p, M: mag }),
+    fc.tuple(range, mag).map(([[x1, x2], q]): Load => ({ kind: 'udl', x1, x2, q })),
+    fc.tuple(range, mag, mag).map(([[x1, x2], q1, q2]): Load => ({ kind: 'linear', x1, x2, q1, q2 })),
+  );
+  const supports: fc.Arbitrary<Support[]> = fc.oneof(
+    fc
+      .tuple(fc.integer({ min: 0, max: L12 }), fc.integer({ min: 0, max: L12 }))
+      .filter(([a, b]) => a !== b)
+      .map(([a, b]) => [
+        { id: 'S0', type: 'pin' as const, x: R.q(a, 12), label: 'A' },
+        { id: 'S1', type: 'roller' as const, x: R.q(b, 12), label: 'B' },
+      ]),
+    fc.boolean().map((left) => [{ id: 'S0', type: 'fixed' as const, x: left ? R.ZERO : L, label: 'A' }]),
+  );
+  return fc.record({ length: fc.constant(L), supports, loads: fc.array(load, { minLength: 1, maxLength: 8 }) });
+});
