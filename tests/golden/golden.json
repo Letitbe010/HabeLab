@@ -152,6 +152,30 @@
           { "x1": "1", "x2": "4", "V": ["-2"], "M": ["8", "-2"] }
         ]
       }
+    },
+    {
+      "id": "G7",
+      "note": "OPE Madril 2025, 590112, 6. ariketa (erabiltzaileak bidalia). Ardatza, bi errodamendu muturretan (testuak 'apoyos fijos' dio; karga axialik ez dagoenez, finkoa + mugikorra eredu isostatiko baliokidea da). Neurriak kateatuak, mm-tan: 200 + 600. Eskuz ebatzia: R_A = 400·600/800 = 300 N; R_B = 100 N; M(0,2) = 300·0,2 = 60 N·m. v1-etik kanpo (§15), etorkizunerako: W = π·24³/32 = 1357,17 mm³ → σ_max = 44,21 MPa; σ_onarg = 425/2 = 212,5 MPa (σ < σ_onarg); T = 1100 W / (320·2π/60 rad/s) = 32,83 N·m; W₀ = π·24³/16 = 2714,34 mm³ → τ_max = 12,09 MPa.",
+      "exercise": {
+        "id": "G7",
+        "origin": "golden",
+        "sourceNote": "OPE Madril 2025, 590112, 6. ariketa",
+        "difficulty": 1,
+        "beam": { "length": "0.8", "supports": [{ "type": "pin", "x": "0", "label": "A" }, { "type": "roller", "x": "0.8", "label": "B" }] },
+        "loads": [{ "kind": "point", "x": "0.2", "F": "400", "unit": "N" }],
+        "ask": { "reactions": true, "diagrams": true }
+      },
+      "expected": {
+        "forceUnit": "N",
+        "momentUnit": "N·m",
+        "reactions": { "A": { "R": "300" }, "B": { "R": "100" } },
+        "points": [
+          { "kind": "breakpoint", "x": "0", "Vl": "0", "Vr": "300", "Ml": "0", "Mr": "0" },
+          { "kind": "breakpoint", "x": "0.2", "Vl": "300", "Vr": "-100", "Ml": "60", "Mr": "60" },
+          { "kind": "breakpoint", "x": "0.8", "Vl": "-100", "Vr": "0", "Ml": "0", "Mr": "0" }
+        ],
+        "Mmax": { "value": "60", "x": "0.2", "tol": "0" }
+      }
     }
   ]
 }

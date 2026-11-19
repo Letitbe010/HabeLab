@@ -19,6 +19,7 @@ const POOL = resolve(__dirname, '../src/data/pool.json');
 
 const GOLDEN_NOTES: Record<string, string> = {
   G1: 'OPE Euskadi 2022, 4. ariketa (A aukera) / OPE Euskadi 2022, ejercicio 4 (opción A)',
+  G7: 'OPE Madril 2025, 590112, 6. ariketa (a–c atalak) / OPE Madrid 2025, 590112, ejercicio 6 (apartados a–c)',
 };
 const CLASSIC = 'Kasu klasikoa (testuliburua) / caso clásico (libro de texto)';
 
@@ -57,15 +58,16 @@ describe('pool.json', () => {
   const pool = existsSync(POOL) ? (JSON.parse(readFileSync(POOL, 'utf8')) as { exercises: Exercise[] }).exercises : [];
 
   it('has the golden cases and 30 generated exercises, with unique ids', () => {
-    expect(pool.length).toBe(36);
+    expect(pool.length).toBe((golden as { cases: unknown[] }).cases.length + 30);
     expect(new Set(pool.map((e) => e.id)).size).toBe(pool.length);
     for (const level of [1, 2, 3]) expect(pool.filter((e) => e.difficulty === level).length).toBeGreaterThanOrEqual(10);
   });
 
-  it('never claims a real exam origin except G1 (spec §6.1)', () => {
+  it('claims a real exam origin only for the real exam exercises G1 and G7 (spec §6.1)', () => {
     for (const e of pool) {
       if (e.id === 'pool-G1') expect(e.sourceNote).toContain('OPE Euskadi 2022');
-      else expect(e.sourceNote ?? '').not.toMatch(/OPE Euskadi \d{4}|\d{4}.*ariketa/);
+      else if (e.id === 'pool-G7') expect(e.sourceNote).toContain('OPE Madril 2025');
+      else expect(e.sourceNote ?? '').not.toMatch(/OPE [A-Za-z]+ \d{4}/); // a named exam with a year
     }
   });
 
