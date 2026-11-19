@@ -32,8 +32,8 @@ function perfect(ex: Exercise, unit: 'N' | 'kN' = 'N', digits = 6): ModeAAnswer 
   ans.equations = sol.segments.map((sg) => ({
     x1: R.toString(sg.x1),
     x2: R.toString(sg.x2),
-    V: sg.V.length ? sg.V.map((c) => s(R.toNumber(c))) : ['0'], // V ≡ 0: the user types 0
-    M: sg.M.length ? sg.M.map((c) => s(R.toNumber(c))) : ['0'],
+    V: sg.V.map((c) => s(R.toNumber(c))), // V ≡ 0 → no coefficients: empty fields mean 0
+    M: sg.M.map((c) => s(R.toNumber(c))),
   }));
   return ans;
 }
@@ -44,6 +44,7 @@ describe('grader: a correct answer scores 10 (spec §9.5)', () => {
     for (const unit of ['N', 'kN'] as const) {
       const r1 = grade(ex, perfect(ex, unit));
       expect(r1.invalid).toBe(false);
+      expect(r1.incomplete).toBe(false);
       expect(r1.items.filter((i) => i.status !== 'correct')).toEqual([]);
       expect(r1.score).toBe(10);
       const d = asDiagrams(ex);
@@ -146,5 +147,45 @@ describe('grader: |M|max and position', () => {
     a.mmax = { value: '15', x: '3' };
     const r = grade(ex, a);
     expect(r.items.find((i) => i.id === 'xmax')!.status).toBe('wrong');
+  });
+});
+
+describe('grader: empty fields (spec §8.1.4)', () => {
+  it('an empty stand-alone field flags the attempt as incomplete instead of counting it', () => {
+    const ex = goldenEx('G1');
+    const r = grade(ex, { forceUnit: 'N', momentUnit: 'N·m', pointValues: { p: { Vl: '-29430', M: '' } } });
+    expect(r.incomplete).toBe(true);
+    expect(r.items.find((i) => i.id === 'Mp:p')!.status).toBe('missing');
+  });
+  it('a key point never added is "missing" and counts, without blocking the attempt', () => {
+    const ex = asDiagrams(goldenEx('G1'));
+    const a = perfect(ex);
+    a.points = a.points!.filter((p) => Math.abs(Number(p.x) - 2) > 1e-9);
+    const r = grade(ex, a);
+    expect(r.incomplete).toBe(false);
+    expect(r.score).toBeLessThan(10);
+  });
+  it('a point added with no M values is incomplete', () => {
+    const ex = asDiagrams(goldenEx('G1'));
+    const a = perfect(ex);
+    a.points!.push({ x: '3', Vl: '-29430' });
+    expect(grade(ex, a).incomplete).toBe(true);
+  });
+  it('an equation row with all fields empty is the zero polynomial (pool-L2-204, last segment)', () => {
+    const ex = (pool as { exercises: Exercise[] }).exercises.find((e) => e.id === 'pool-L2-204')!;
+    const a = perfect(ex);
+    const last = a.equations![a.equations!.length - 1]!;
+    expect(last.V).toEqual([]);
+    expect(grade(ex, a).score).toBe(10);
+  });
+});
+
+describe('grader: V tolerance uses the V diagram, not the reactions (spec §8.1)', () => {
+  it('G4: |V|max = 6 kN < R_B = 9 kN; 0.035 kN off on V = −3 kN is wrong (limit 0.5 % of 6 = 0.03)', () => {
+    const ex = asDiagrams(goldenEx('G4'));
+    const a = perfect(ex, 'kN');
+    a.points = a.points!.map((p) => (Number(p.x) === 0 ? { ...p, Vr: '-3,035', Vl: '' } : p));
+    const r = grade(ex, a);
+    expect(r.items.find((i) => i.part === 'V' && i.x === 0)!.status).toBe('wrong');
   });
 });

@@ -18,12 +18,33 @@ interface Props {
 
 const cls = (s?: Status) => (s ? s : '');
 
-function Field({ label, value, onChange, status, w = 'w8' }: { label: string; value?: string; onChange: (v: string) => void; status?: Status; w?: string }) {
+/** Toggle a leading minus sign (the iOS decimal keypad has no "−" key). */
+export const toggleSign = (v: string): string => {
+  const s = v.trim();
+  if (s.startsWith('-') || s.startsWith('−')) return s.slice(1);
+  return `-${s}`;
+};
+
+/** Numeric input with a ± button; keeps inputmode="decimal" for the phone keypad. */
+function NumInput({ value, onChange, label, signed = true }: { value?: string; onChange: (v: string) => void; label: string; signed?: boolean }) {
   return (
-    <label className={`fld ${w} ${cls(status)}`}>
-      {label}
-      <input inputMode="decimal" autoComplete="off" value={value ?? ''} onChange={(e) => onChange(e.target.value)} />
-    </label>
+    <span className="num-in">
+      <input inputMode="decimal" autoComplete="off" aria-label={label} value={value ?? ''} onChange={(e) => onChange(e.target.value)} />
+      {signed && (
+        <button type="button" className="pm" aria-label={`± ${label}`} onClick={() => onChange(toggleSign(value ?? ''))}>
+          ±
+        </button>
+      )}
+    </span>
+  );
+}
+
+function Field({ label, value, onChange, status, w = 'w8', signed = true }: { label: string; value?: string; onChange: (v: string) => void; status?: Status; w?: string; signed?: boolean }) {
+  return (
+    <div className={`fld ${w} ${cls(status)}`}>
+      <span>{label}</span>
+      <NumInput label={label} value={value} onChange={onChange} signed={signed} />
+    </div>
   );
 }
 
@@ -113,38 +134,27 @@ export function KeyValuesForm({ ex, ans, onChange, result }: Props) {
             <b>{t('form.points')}</b>
           </header>
           <p className="hint">{t('form.pointsHint')}</p>
-          <div className="scroll-x">
-            <table className="points-table">
-              <thead>
-                <tr>
-                  <th>x (m)</th>
-                  <th>V⁻ ({ans.forceUnit})</th>
-                  <th>V⁺ ({ans.forceUnit})</th>
-                  <th>M⁻ ({ans.momentUnit})</th>
-                  <th>M⁺ ({ans.momentUnit})</th>
-                  <th />
-                </tr>
-              </thead>
-              <tbody>
-                {(ans.points ?? []).map((row, i) => {
-                  const upd = (patch: Partial<PointRow>) => set({ points: (ans.points ?? []).map((r, k) => (k === i ? { ...r, ...patch } : r)) });
-                  return (
-                    <tr key={i}>
-                      {(['x', 'Vl', 'Vr', 'Ml', 'Mr'] as const).map((f) => (
-                        <td key={f} className={cls(f === 'x' ? undefined : rowStatus(row, f))}>
-                          <input inputMode="decimal" autoComplete="off" aria-label={`${f} ${i + 1}`} value={row[f] ?? ''} onChange={(e) => upd({ [f]: e.target.value })} />
-                        </td>
-                      ))}
-                      <td>
-                        <button className="small" onClick={() => set({ points: (ans.points ?? []).filter((_, k) => k !== i) })} aria-label={t('form.remove')}>
-                          ✕
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className="prows">
+            {(ans.points ?? []).map((row, i) => {
+              const upd = (patch: Partial<PointRow>) => set({ points: (ans.points ?? []).map((r, k) => (k === i ? { ...r, ...patch } : r)) });
+              const labels: Record<'Vl' | 'Vr' | 'Ml' | 'Mr', string> = {
+                Vl: `V⁻ (${ans.forceUnit})`,
+                Vr: `V⁺ (${ans.forceUnit})`,
+                Ml: `M⁻ (${ans.momentUnit})`,
+                Mr: `M⁺ (${ans.momentUnit})`,
+              };
+              return (
+                <div className="prow" key={i}>
+                  <Field label="x (m)" value={row.x} w="w5" signed={false} onChange={(v) => upd({ x: v })} />
+                  {(['Vl', 'Vr', 'Ml', 'Mr'] as const).map((f) => (
+                    <Field key={f} label={labels[f]} value={row[f]} status={rowStatus(row, f)} onChange={(v) => upd({ [f]: v })} />
+                  ))}
+                  <button className="small rm" onClick={() => set({ points: (ans.points ?? []).filter((_, k) => k !== i) })} aria-label={t('form.remove')}>
+                    ✕
+                  </button>
+                </div>
+              );
+            })}
           </div>
           <div className="actions">
             <button onClick={() => set({ points: [...(ans.points ?? []), { x: '' }] })}>{t('form.addPoint')}</button>
@@ -181,7 +191,7 @@ export function KeyValuesForm({ ex, ans, onChange, result }: Props) {
           </header>
           <div className="row">
             <Field label={`|M|max (${ans.momentUnit})`} value={ans.mmax?.value} status={byId('mmax')} onChange={(v) => set({ mmax: { ...ans.mmax, value: v } })} />
-            <Field label={t('form.position')} value={ans.mmax?.x} status={byId('xmax')} w="w5" onChange={(v) => set({ mmax: { ...ans.mmax, x: v } })} />
+            <Field label={t('form.position')} value={ans.mmax?.x} status={byId('xmax')} w="w5" signed={false} onChange={(v) => set({ mmax: { ...ans.mmax, x: v } })} />
           </div>
         </div>
       )}
@@ -202,8 +212,8 @@ export function KeyValuesForm({ ex, ans, onChange, result }: Props) {
             return (
               <div key={i} className="ask" style={{ marginTop: 8 }}>
                 <div className="row">
-                  <Field label={t('form.from')} value={row.x1} w="w5" onChange={(v) => upd({ x1: v })} />
-                  <Field label={t('form.to')} value={row.x2} w="w5" onChange={(v) => upd({ x2: v })} />
+                  <Field label={t('form.from')} value={row.x1} w="w5" signed={false} onChange={(v) => upd({ x1: v })} />
+                  <Field label={t('form.to')} value={row.x2} w="w5" signed={false} onChange={(v) => upd({ x2: v })} />
                   <button className="small" onClick={() => set({ equations: (ans.equations ?? []).filter((_, k) => k !== i) })}>
                     {t('form.remove')}
                   </button>

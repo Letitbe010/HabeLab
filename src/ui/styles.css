@@ -188,3 +188,29 @@ svg .guide { stroke: #c9d1dc; stroke-width: 1; stroke-dasharray: 3 3; }
 svg .dlab { font-size: 13px; font-weight: 700; }
 svg .dval { font-size: 13px; fill: var(--ink); font-weight: 600; paint-order: stroke; stroke: #fff; stroke-width: 3px; }
 .diag-box svg + svg { border-top: 1px solid var(--line); }
+
+/* numeric input with ± (iOS decimal keypad has no minus) */
+.num-in { display: inline-flex; align-items: stretch; gap: 0; }
+.num-in input { font: inherit; font-size: 17px; padding: 8px 10px; border: 1px solid #b9c2ce; border-radius: 8px 0 0 8px; min-height: 44px; color: var(--ink); background: #fff; width: 100%; min-width: 0; }
+.num-in .pm { min-width: 40px; border-radius: 0 8px 8px 0; border-left: none; padding: 0 8px; font-weight: 700; }
+.fld.w8 .num-in { width: 10em; }
+.fld.w5 .num-in { width: 6.5em; }
+.fld.correct .num-in input { border-color: var(--ok); background: var(--okbg); }
+.fld.wrong .num-in input { border-color: var(--bad); background: var(--badbg); }
+.fld.invalid .num-in input, .fld.missing .num-in input { border-color: var(--warn); background: var(--warnbg); }
+.prows { display: grid; gap: 8px; margin-top: 8px; }
+.prow { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; padding: 8px; border: 1px solid var(--line); border-radius: 10px; background: var(--soft); }
+.prow .rm { margin-left: auto; }
+@media (max-width: 600px) {
+  .prow { display: grid; grid-template-columns: 1fr 1fr; }
+  .prow .fld:first-child { grid-column: 1 / -1; }
+  .prow .fld .num-in, .prow .fld.w5 .num-in { width: 100%; }
+  .prow .rm { grid-column: 1 / -1; margin-left: 0; }
+}
+/* grid items must be allowed to shrink below their content width (no horizontal page scroll) */
+.asks { grid-template-columns: minmax(0, 1fr); }
+.asks > *, .prow > * { min-width: 0; }
+@media (max-width: 600px) {
+  .prow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fld.w8 .num-in { width: 100%; max-width: 14em; }
+}

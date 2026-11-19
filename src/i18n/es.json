@@ -7,7 +7,6 @@
   "nav.settings": "Ajustes",
   "nav.soon": "Esta sección se hará en las próximas fases.",
   "nav.back": "← Volver",
-
   "home.title": "Práctica",
   "home.lead": "Resuelve la viga en papel, como en el examen, e introduce aquí los resultados. La aplicación corrige con un solucionador exacto.",
   "home.new": "Ejercicio nuevo (aleatorio)",
@@ -24,7 +23,6 @@
   "home.generate": "Generar ejercicio",
   "home.pool": "Colección de ejercicios verificados",
   "home.open": "Abrir →",
-
   "ex.seed": "Semilla: {seed}",
   "ex.source": "Origen: {source}",
   "ex.step1": "Enunciado",
@@ -41,7 +39,6 @@
   "ex.fixInput": "Algunos campos no se pueden interpretar (marcados en amarillo). Corrígelos; este intento no se ha contado.",
   "ex.missingPoints": "Puntos críticos que faltan: x = {xs} m",
   "ex.invalidExercise": "La verificación interna ha fallado; este ejercicio no se muestra.",
-
   "form.units": "Unidades",
   "form.reactions": "Reacciones",
   "form.reactionsHint": "Con signo: hacia arriba +. Momento de empotramiento: horario +.",
@@ -57,7 +54,6 @@
   "form.addSegment": "+ tramo",
   "form.from": "x₁ (m)",
   "form.to": "x₂ (m)",
-
   "st.correct": "Correcto",
   "st.wrong": "Incorrecto",
   "st.missing": "Falta",
@@ -73,7 +69,6 @@
   "part.xmax": "Posición de |M|máx",
   "part.Veq": "Ecuaciones V(x)",
   "part.Meq": "Ecuaciones M(x)",
-
   "sol.title": "Solución paso a paso",
   "sol.units": "1. Conversión de unidades",
   "sol.noUnits": "Las cargas ya están en unidades del SI.",
@@ -89,11 +84,9 @@
   "sol.noVzero": "No hay puntos con V = 0 dentro de los tramos: los extremos están en los puntos críticos.",
   "sol.absMax": "|M|máx = {m}, en x = {x} m",
   "sol.segment": "{a} m < x < {b} m",
-
   "fig.label": "Figura de la viga",
   "diag.V": "Esfuerzo cortante V",
   "diag.M": "Momento flector M",
-
   "set.title": "Ajustes",
   "set.g": "Aceleración de la gravedad g (kg → N)",
   "set.vconv": "Convenio de signos de V",
@@ -109,5 +102,6 @@
   "set.tol": "Tolerancias (solo lectura)",
   "set.tolText": "Valores: error relativo ≤ 1 %, o error absoluto ≤ 0,5 % del |valor máximo| del diagrama. Posiciones: ±0,01 m o ±0,5 % de L (la mayor); en puntos con V = 0, ±0,02 m.",
   "set.about": "Acerca de",
-  "set.version": "Versión {v} · commit {c}"
+  "set.version": "Versión {v} · commit {c}",
+  "ex.incomplete": "Hay campos vacíos. Complétalos: el intento no se ha contado y lo vacío no se considera incorrecto."
 }

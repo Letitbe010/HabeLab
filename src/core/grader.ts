@@ -16,9 +16,10 @@
  *  Inside each part: proportion of correct items. Missing items count as wrong; extra
  *  points are not penalised when their values are right (§8.2), and count as wrong when not.
  *
- * Input that cannot be interpreted (e.g. "3,,5") is reported as 'invalid' and the result
- * is flagged so the UI asks to fix it before counting the attempt (§8.1.4). An empty
- * field for a required item is 'missing'.
+ * Input that cannot be interpreted (e.g. "3,,5") is reported as 'invalid', and an empty
+ * stand-alone field as 'missing' with the result flagged `incomplete`: in both cases the UI
+ * asks to fix it before counting the attempt (§8.1.4). Key points or segments the user did
+ * not add at all are 'missing' and DO count (identifying them is part of the exercise).
  */
 
 import type { Exercise } from './model';
@@ -86,6 +87,12 @@ export interface GradeResult {
   score: number;
   /** Some non-empty input could not be interpreted: ask the user to fix it first. */
   invalid: boolean;
+  /**
+   * A field that stands on its own (a reaction, V_p, M_p, |M|max, its x) or the V/M values of a
+   * point the user added are empty: §8.1.4, not counted as wrong; ask to complete it first.
+   * Key points or segments the user never added are NOT this: they are "missing" and count.
+   */
+  incomplete: boolean;
   /** Key points the user did not give (x in m). */
   missingPoints: number[];
   solution: AnalyticSolution;
@@ -98,6 +105,12 @@ export interface GradeOptions {
 }
 
 // ---------------------------------------------------------------------------
+
+const stripStandalone = (extra: object): object => {
+  const rest = { ...(extra as Record<string, unknown>) };
+  delete rest.standalone;
+  return rest;
+};
 
 export const relTol = 0.01;
 export const absTolFrac = 0.005;
@@ -137,30 +150,37 @@ export function grade(ex: Exercise, ans: ModeAAnswer, opts: GradeOptions = {}): 
   const fF = R.toNumber(factorToSI(ans.forceUnit, g));
   const fM = R.toNumber(factorToSI(ans.momentUnit, g));
   const vSign = opts.vFlip ? -1 : 1;
-  const Vscale = Math.max(1e-9, ext.absVmax.value, ...sol.reactions.map((r) => Math.abs(R.toNumber(r.R))));
+  // §8.1: the absolute tolerance uses the max |value| of the DIAGRAM the item belongs to;
+  // reactions use the largest of |V|max and the reactions themselves.
+  const Vscale = Math.max(1e-9, ext.absVmax.value);
+  const Rscale = Math.max(Vscale, ...sol.reactions.map((r) => Math.abs(R.toNumber(r.R))));
   const Mscale = Math.max(1e-9, ext.absMmax.value, ...sol.reactions.map((r) => Math.abs(R.toNumber(r.M ?? R.ZERO))));
 
   const items: Item[] = [];
   let invalid = false;
+  let incomplete = false;
 
   /** Compare one typed value (in the user's unit) with an SI expectation. */
   const judge = (part: PartKey, id: string, raw: string | undefined, expected: number, factor: number, scale: number, extra = {}): Item => {
     const p = parse(raw);
     if (p.kind === 'invalid') {
       invalid = true;
-      return { part, id, status: 'invalid', expected, given: null, raw, ...extra };
+      return { part, id, status: 'invalid', expected, given: null, raw, ...stripStandalone(extra) };
     }
-    if (p.kind === 'empty') return { part, id, status: 'missing', expected, given: null, raw, ...extra };
+    if (p.kind === 'empty') {
+      if ((extra as { standalone?: boolean }).standalone) incomplete = true; // §8.1.4: an empty field is not counted as wrong
+      return { part, id, status: 'missing', expected, given: null, raw, ...stripStandalone(extra) };
+    }
     const given = p.value * factor;
-    return { part, id, status: valueOk(given, expected, scale) ? 'correct' : 'wrong', expected, given, raw, ...extra };
+    return { part, id, status: valueOk(given, expected, scale) ? 'correct' : 'wrong', expected, given, raw, ...stripStandalone(extra) };
   };
 
   // --- reactions -------------------------------------------------------------------
   if (ex.ask.reactions) {
     for (const r of sol.reactions) {
       const a = ans.reactions?.[r.label];
-      items.push(judge('reactions', `R:${r.label}`, a?.R, R.toNumber(r.R), fF, Vscale, { x: R.toNumber(r.x) }));
-      if (r.M) items.push(judge('reactions', `M:${r.label}`, a?.M, R.toNumber(r.M), fM, Mscale, { x: R.toNumber(r.x) }));
+      items.push(judge('reactions', `R:${r.label}`, a?.R, R.toNumber(r.R), fF, Rscale, { x: R.toNumber(r.x), standalone: true }));
+      if (r.M) items.push(judge('reactions', `M:${r.label}`, a?.M, R.toNumber(r.M), fM, Mscale, { x: R.toNumber(r.x), standalone: true }));
     }
   }
 
@@ -245,6 +265,10 @@ export function grade(ex: Exercise, ans: ModeAAnswer, opts: GradeOptions = {}): 
       out.push(judge(part, id('-'), rawL, l, f, scale, { x, extra }));
       out.push(judge(part, id('+'), rawR, r, f, scale, { x, extra }));
     };
+    if (row.x.trim() !== '') {
+      const empty = (a?: string, b?: string) => !(a && a.trim()) && !(b && b.trim());
+      if (empty(row.Vl, row.Vr) || empty(row.Ml, row.Mr)) incomplete = true; // a point the user added with no V or no M
+    }
     one('V', k.Vl.value, k.Vr.value, row.Vl, row.Vr);
     one('M', k.Ml.value, k.Mr.value, row.Ml, row.Mr);
     // a correct extra point is not counted (no reward, no penalty); a wrong one counts as wrong
@@ -259,17 +283,17 @@ export function grade(ex: Exercise, ans: ModeAAnswer, opts: GradeOptions = {}): 
     const a = ans.pointValues?.[label];
     const x = R.toNumber(vals.x);
     if (R.eq(vals.Vl, vals.Vr)) {
-      items.push(judge('Vp', `Vp:${label}`, a?.Vl?.trim() ? a.Vl : a?.Vr, R.toNumber(vals.Vl), fF * vSign, Vscale, { x }));
+      items.push(judge('Vp', `Vp:${label}`, a?.Vl?.trim() ? a.Vl : a?.Vr, R.toNumber(vals.Vl), fF * vSign, Vscale, { x, standalone: true }));
     } else {
-      items.push(judge('Vp', `Vp-:${label}`, a?.Vl, R.toNumber(vals.Vl), fF * vSign, Vscale, { x }));
-      items.push(judge('Vp', `Vp+:${label}`, a?.Vr, R.toNumber(vals.Vr), fF * vSign, Vscale, { x }));
+      items.push(judge('Vp', `Vp-:${label}`, a?.Vl, R.toNumber(vals.Vl), fF * vSign, Vscale, { x, standalone: true }));
+      items.push(judge('Vp', `Vp+:${label}`, a?.Vr, R.toNumber(vals.Vr), fF * vSign, Vscale, { x, standalone: true }));
     }
-    items.push(judge('Mp', `Mp:${label}`, a?.M, R.toNumber(vals.Ml), fM, Mscale, { x }));
+    items.push(judge('Mp', `Mp:${label}`, a?.M, R.toNumber(vals.Ml), fM, Mscale, { x, standalone: true }));
   }
 
   // --- |M|max and its position -----------------------------------------------------------
   if (ex.ask.mmax) {
-    const it = judge('mmax', 'mmax', ans.mmax?.value, ext.absMmax.value, fM, Mscale);
+    const it = judge('mmax', 'mmax', ans.mmax?.value, ext.absMmax.value, fM, Mscale, { standalone: true });
     if (it.status === 'wrong' && it.given !== null && valueOk(Math.abs(it.given), ext.absMmax.value, Mscale)) it.status = 'correct'; // sign not asked
     items.push(it);
     const px = parse(ans.mmax?.x);
@@ -280,7 +304,10 @@ export function grade(ex: Exercise, ans: ModeAAnswer, opts: GradeOptions = {}): 
     if (px.kind === 'invalid') {
       invalid = true;
       items.push({ part: 'xmax', id: 'xmax', status: 'invalid', expected: ext.xAbsMmax.value, given: null, raw: ans.mmax?.x });
-    } else if (px.kind === 'empty') items.push({ part: 'xmax', id: 'xmax', status: 'missing', expected: ext.xAbsMmax.value, given: null });
+    } else if (px.kind === 'empty') {
+      incomplete = true;
+      items.push({ part: 'xmax', id: 'xmax', status: 'missing', expected: ext.xAbsMmax.value, given: null });
+    }
     else {
       const ok = where.some((k) => Math.abs(k.x.value - px.value) <= positionTol(L, k.tags.includes('shear-zero')));
       items.push({ part: 'xmax', id: 'xmax', status: ok ? 'correct' : 'wrong', expected: ext.xAbsMmax.value, given: px.value, raw: ans.mmax?.x });
@@ -309,10 +336,11 @@ export function grade(ex: Exercise, ans: ModeAAnswer, opts: GradeOptions = {}): 
           items.push({ part, id: `${part}:${tag}`, status: 'invalid', expected: null, given: null, x: x1 });
           continue;
         }
-        if (!row || parsed.every((p) => p.kind === 'empty')) {
+        if (!row) {
           items.push({ part, id: `${part}:${tag}`, status: 'missing', expected: null, given: null, x: x1 });
           continue;
         }
+        // the form says "empty field = 0": a segment row with no coefficients is the zero polynomial
         // compare the polynomials at 51 points of the segment (empty coefficient = 0)
         const c = parsed.map((p) => (p.kind === 'ok' ? p.value * f : 0));
         let ok = true;
@@ -342,5 +370,5 @@ export function grade(ex: Exercise, ans: ModeAAnswer, opts: GradeOptions = {}): 
     return { key, weight: w / sumW, correct, total: its.length, ratio: its.length ? correct / its.length : 1 };
   });
   const score = Math.round(parts.reduce((a, p) => a + p.weight * p.ratio, 0) * 100) / 10;
-  return { items, parts, score, invalid, missingPoints, solution: sol };
+  return { items, parts, score, invalid, incomplete, missingPoints, solution: sol };
 }

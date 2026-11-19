@@ -1,7 +1,7 @@
 {
   "name": "habelab",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.5.0",
   "type": "module",
   "description": "HabeLab: statically determinate beam exercise trainer for the Basque OPE 1508 (Fabrikazio Mekanikoaren Antolamendua eta Proiektuak)",
   "license": "MIT",

@@ -43,7 +43,10 @@ export function PracticeExercise({ source }: { source: Source }) {
 
   const check = useMemo(() => (ex ? verifyBeam(exerciseToBeam(ex, settings.g)) : null), [ex, settings.g]);
   if (!ex || !check) return <section className="card">404</section>;
-  if (!check.ok || !check.a) return <section className="card note warn">{t('ex.invalidExercise')}</section>;
+  if (!check.ok || !check.a) {
+    console.error('HabeLab: internal verification failed', ex.id, check.failures); // spec §5.3: logged, not shown
+    return <section className="card note warn">{t('ex.invalidExercise')}</section>;
+  }
   const sol = check.a;
   const kps = keyPoints(sol);
   const units = displayUnits(ex);
@@ -53,7 +56,8 @@ export function PracticeExercise({ source }: { source: Source }) {
     saveJSON(storeKey, a);
   };
   const onGrade = () => setResult(grade(ex, ans, { g: settings.g, vFlip: settings.vFlip }));
-  const step = showSol ? 4 : result && !result.invalid ? 3 : 2;
+  const blocked = !!result && (result.invalid || result.incomplete);
+  const step = showSol ? 4 : result && !blocked ? 3 : 2;
 
   const nextHref =
     source.kind === 'generated'
@@ -134,8 +138,8 @@ export function PracticeExercise({ source }: { source: Source }) {
 
       {result && (
         <div className="feedback" aria-live="polite">
-          {result.invalid ? (
-            <p className="note warn">{t('ex.fixInput')}</p>
+          {blocked ? (
+            <p className="note warn">{result.invalid ? t('ex.fixInput') : t('ex.incomplete')}</p>
           ) : (
             <>
               <p className="score">{t('ex.score', { score: num(result.score, 1) })}</p>
@@ -162,7 +166,7 @@ export function PracticeExercise({ source }: { source: Source }) {
                 </span>
                 <span className="what">{itemLabel(it)}</span>
                 {it.expected !== null && <span className="vals">{t('res.expected', { v: valText(it, it.expected) })}</span>}
-                {it.given !== null && it.status !== 'correct' && <span className="vals">{t('res.given', { v: valText(it, it.given) })}</span>}
+                {it.given !== null && <span className="vals">{t('res.given', { v: valText(it, it.given) })}</span>}
               </li>
             ))}
           </ul>

@@ -44,7 +44,7 @@ export function SettingsView() {
         </fieldset>
         <fieldset>
           <legend>{t('set.about')}</legend>
-          <p>{t('set.version', { v: '0.5.0', c: COMMIT })}</p>
+          <p>{t('set.version', { v: __APP_VERSION__, c: COMMIT })}</p>
           <p>
             <a href="https://letitbe010.github.io/HabeLab/">https://letitbe010.github.io/HabeLab/</a>
           </p>

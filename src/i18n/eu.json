@@ -7,7 +7,6 @@
   "nav.settings": "Ezarpenak",
   "nav.soon": "Atal hau hurrengo faseetan egingo da.",
   "nav.back": "← Atzera",
-
   "home.title": "Praktika",
   "home.lead": "Ebatzi habea paperean, azterketan bezala, eta sartu emaitzak hemen. Aplikazioak ebazle zehatz batekin zuzentzen du.",
   "home.new": "Ariketa berria (ausazkoa)",
@@ -24,7 +23,6 @@
   "home.generate": "Sortu ariketa",
   "home.pool": "Ariketa egiaztatuen bilduma",
   "home.open": "Ireki →",
-
   "ex.seed": "Seed: {seed}",
   "ex.source": "Jatorria: {source}",
   "ex.step1": "Enuntziatua",
@@ -41,7 +39,6 @@
   "ex.fixInput": "Eremu batzuk ezin dira interpretatu (horiz markatuta). Zuzendu itzazu; saiakera hau ez da zenbatu.",
   "ex.missingPoints": "Falta diren puntu kritikoak: x = {xs} m",
   "ex.invalidExercise": "Barneko egiaztapenak huts egin du; ariketa hau ez da erakusten.",
-
   "form.units": "Unitateak",
   "form.reactions": "Erreakzioak",
   "form.reactionsHint": "Zeinuarekin: gorantz +. Landaketaren momentua: erloju-orratzen noranzkoan +.",
@@ -57,7 +54,6 @@
   "form.addSegment": "+ tartea",
   "form.from": "x₁ (m)",
   "form.to": "x₂ (m)",
-
   "st.correct": "Zuzena",
   "st.wrong": "Okerra",
   "st.missing": "Falta da",
@@ -73,7 +69,6 @@
   "part.xmax": "|M|max-en posizioa",
   "part.Veq": "V(x) ekuazioak",
   "part.Meq": "M(x) ekuazioak",
-
   "sol.title": "Ebazpena pausoz pauso",
   "sol.units": "1. Unitate-bihurketak",
   "sol.noUnits": "Kargak SIko unitateetan daude jada.",
@@ -89,11 +84,9 @@
   "sol.noVzero": "Ez dago V = 0 punturik tarteen barruan: muturrak puntu kritikoetan daude.",
   "sol.absMax": "|M|max = {m}, x = {x} m-an",
   "sol.segment": "{a} m < x < {b} m",
-
   "fig.label": "Habearen irudia",
   "diag.V": "Ebakidura-indarra V",
   "diag.M": "Makurdura-momentua M",
-
   "set.title": "Ezarpenak",
   "set.g": "Grabitatearen azelerazioa g (kg → N)",
   "set.vconv": "V-ren zeinu-konbentzioa",
@@ -109,5 +102,6 @@
   "set.tol": "Tolerantziak (irakurtzeko soilik)",
   "set.tolText": "Balioak: errore erlatiboa ≤ % 1, edo errore absolutua ≤ diagramako |balio maximoaren| % 0,5. Posizioak: ±0,01 m edo ±L-ren % 0,5 (handiena); V = 0 puntuetan ±0,02 m.",
   "set.about": "Honi buruz",
-  "set.version": "Bertsioa {v} · commit {c}"
+  "set.version": "Bertsioa {v} · commit {c}",
+  "ex.incomplete": "Eremu batzuk hutsik daude. Bete itzazu: saiakera ez da zenbatu, eta hutsik dagoena ez da okertzat hartzen."
 }
