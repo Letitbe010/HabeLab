@@ -18,4 +18,23 @@ jobs:
       - run: npm run lint
       - run: npm run typecheck
       - run: npm test
-  # The Python oracle job (spec §9.3, §14.2) is added in phase 3.
+
+  oracle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install -r tools/oracle/requirements.txt
+      - run: npm ci
+      # The SymPy oracle solves the golden and the fixed random beams independently;
+      # tests/oracle.test.ts compares it exactly with solver A and with solver B.
+      - run: python tools/oracle/beams.py tools/oracle/out/oracle.json tests/golden/golden.json tests/oracle/random-beams.json
+      - run: npx vitest run tests/oracle.test.ts
+        env:
+          ORACLE_REQUIRED: '1'
