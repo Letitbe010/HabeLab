@@ -83,14 +83,12 @@
    ],
    "ask": {
     "reactions": true,
-    "diagrams": true,
-    "mmax": true,
-    "equations": true
+    "diagrams": true
    },
    "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
    "text": {
-    "eu": "6 m-ko habea. x koordenatua habearen ezkerreko muturretik neurtzen da. Euskarriak: A: euskarri finkoa (x = 0 m); B: euskarri mugikorra (x = 6 m). Kargak: karga uniformea: 10 kN/m, beherantz, x = 0 m-tik x = 6 m-ra. Kalkulatu erreakzioak eta makurdura-momentu maximoa (balio absolutuan), eta adierazi non gertatzen den.",
-    "es": "Viga de 6 m. La coordenada x se mide desde el extremo izquierdo de la viga. Apoyos: A: apoyo fijo (x = 0 m); B: apoyo móvil (x = 6 m). Cargas: carga uniforme de 10 kN/m, hacia abajo, entre x = 0 m y x = 6 m. Calcula las reacciones y el momento flector máximo (en valor absoluto), e indica dónde se produce."
+    "eu": "6 m-ko habea. x koordenatua habearen ezkerreko muturretik neurtzen da. Euskarriak: A: euskarri finkoa (x = 0 m); B: euskarri mugikorra (x = 6 m). Kargak: karga uniformea: 10 kN/m, beherantz, x = 0 m-tik x = 6 m-ra. Kalkulatu erreakzioak eta marraztu ebakidura-indarren eta makurdura-momentuen diagramak, puntu kritikoetako balioak eta unitateak (SI) adieraziz.",
+    "es": "Viga de 6 m. La coordenada x se mide desde el extremo izquierdo de la viga. Apoyos: A: apoyo fijo (x = 0 m); B: apoyo móvil (x = 6 m). Cargas: carga uniforme de 10 kN/m, hacia abajo, entre x = 0 m y x = 6 m. Calcula las reacciones y dibuja los diagramas de esfuerzos cortantes y de momentos flectores, indicando los valores en los puntos críticos y sus unidades (SI)."
    }
   },
   {
@@ -193,9 +191,8 @@
    ],
    "ask": {
     "reactions": true,
-    "diagrams": true,
-    "mmax": true,
-    "equations": true
+    "diagrams": false,
+    "mmax": true
    },
    "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
    "text": {

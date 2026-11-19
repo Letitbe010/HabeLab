@@ -108,8 +108,10 @@ export function PracticeExercise({ source }: { source: Source }) {
   }
 
   const itemLabel = (it: Item | BResult['items'][number]): string => {
-    if (it.id.startsWith('sV:') || it.id.startsWith('sM:')) return `${t(it.id[1] === 'V' ? 'ed.shapeV' : 'ed.shapeM')} (${it.id.slice(3).replace('-', ' – ').replace(/\.?0+(?=\D|$)/g, '')} m)`;
-    if (it.id.startsWith('qV:') || it.id.startsWith('qM:')) return `${it.id[1]} · ${t('res.sample')} (x ≥ ${num(it.x ?? 0)} m)`;
+    // segment ids look like "sV:0.0000-6.0000" (x1-x2, both ≥ 0)
+    const range = (id: string) => id.slice(3).split('-').map((v) => num(Number(v))).join(' – ');
+    if (it.id.startsWith('sV:') || it.id.startsWith('sM:')) return `${t(it.id[1] === 'V' ? 'ed.shapeV' : 'ed.shapeM')} (${range(it.id)} m)`;
+    if (it.id.startsWith('qV:') || it.id.startsWith('qM:')) return `${it.id[1]} · ${t('res.sample')} (${range(it.id)} m)`;
     if (it.id.startsWith('ext')) return `${t('ed.extM')} (x = ${num(it.x ?? 0)} m)`;
     const [head, rest] = it.id.split(':') as [string, string?];
     const at = it.x !== undefined ? ` (x = ${num(it.x)} m)` : '';

@@ -21,7 +21,11 @@ const GOLDEN_NOTES: Record<string, string> = {
   G1: 'OPE Euskadi 2022, 4. ariketa (A aukera) / OPE Euskadi 2022, ejercicio 4 (opción A)',
   G7: 'OPE Madril 2025, 590112, 6. ariketa (a–c atalak) / OPE Madrid 2025, 590112, ejercicio 6 (apartados a–c)',
 };
-const CLASSIC = 'Kasu klasikoa (testuliburua) / caso clásico (libro de texto)';
+const POOL_ASK: Record<string, Exercise['ask']> = {
+  G2: { reactions: true, diagrams: true },
+  G5: { reactions: true, diagrams: false, mmax: true },
+};
+const CLASSIC ='Kasu klasikoa (testuliburua) / caso clásico (libro de texto)';
 
 /** (level, seed, ask): fixed, so the pool is reproducible. */
 const PLAN: [Level, number, AskType][] = [
@@ -44,7 +48,9 @@ const PLAN: [Level, number, AskType][] = [
 
 if (process.env.GEN_POOL === '1') {
   const fromGolden = (golden as { cases: { id: string; exercise: Exercise }[] }).cases.map((c): Exercise => {
-    const ex: Exercise = { ...c.exercise, id: `pool-${c.id}`, origin: 'pool', sourceNote: GOLDEN_NOTES[c.id] ?? CLASSIC };
+    // one ask type per exercise, as the generator does (the golden file lists several
+    // things to check; the grader scores one kind of request at a time)
+    const ex: Exercise = { ...c.exercise, id: `pool-${c.id}`, origin: 'pool', sourceNote: GOLDEN_NOTES[c.id] ?? CLASSIC, ask: POOL_ASK[c.id] ?? c.exercise.ask };
     return { ...ex, text: exerciseText(ex) };
   });
   const generated = PLAN.map(([level, seed, ask]): Exercise => {
@@ -68,6 +74,13 @@ describe('pool.json', () => {
       if (e.id === 'pool-G1') expect(e.sourceNote).toContain('OPE Euskadi 2022');
       else if (e.id === 'pool-G7') expect(e.sourceNote).toContain('OPE Madril 2025');
       else expect(e.sourceNote ?? '').not.toMatch(/OPE [A-Za-z]+ \d{4}/); // a named exam with a year
+    }
+  });
+
+  it('every exercise asks exactly one kind of thing (diagrams | point | mmax | equations)', () => {
+    for (const e of pool) {
+      const kinds = [e.ask.diagrams, !!e.ask.pointValues?.length, e.ask.mmax, e.ask.equations].filter(Boolean).length;
+      expect(kinds, e.id).toBe(1);
     }
   });
 
