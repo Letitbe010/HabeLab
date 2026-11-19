@@ -19,8 +19,8 @@ because SymPy's own Beam module uses different ones (it is NOT used here):
 
 Usage:
   python tools/oracle/beams.py OUT.json INPUT.json [INPUT.json ...]
-Each INPUT is either tests/golden/golden.json ({"cases": [{"id", "exercise"}]}) or a
-random-beam file ({"beams": [{"id", "exercise"}]}). Exercises use the app's JSON format
+Each INPUT is either tests/golden/golden.json ({"cases": [{"id", "exercise"}]}), a
+random-beam file ({"beams": [{"id", "exercise"}]}) or src/data/pool.json ({"exercises": [...]}). Exercises use the app's JSON format
 (model.ts, Exercise); values are decimal or "p/q" strings.
 """
 
@@ -222,9 +222,10 @@ def main():
     results = {}
     for path in sys.argv[2:]:
         data = json.loads(Path(path).read_text(encoding="utf8"))
-        items = data.get("cases") or data.get("beams") or []
+        items = data.get("cases") or data.get("beams") or data.get("exercises") or []
         for it in items:
-            results[it["id"]] = solve_beam(it["exercise"])
+            # golden/random files wrap the exercise; pool.json lists exercises directly
+            results[it["id"]] = solve_beam(it.get("exercise", it))
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(json.dumps({"tool": f"sympy {sp.__version__}", "g": "981/100", "results": results}, indent=1), encoding="utf8")
     print(f"oracle: {len(results)} beams -> {out}")

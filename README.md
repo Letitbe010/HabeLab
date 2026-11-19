@@ -21,7 +21,7 @@ npm run build
 ```bash
 python -m venv tools/oracle/.venv
 tools/oracle/.venv/Scripts/python -m pip install -r tools/oracle/requirements.txt   # Windows
-tools/oracle/.venv/Scripts/python tools/oracle/beams.py tools/oracle/out/oracle.json tests/golden/golden.json tests/oracle/random-beams.json
+tools/oracle/.venv/Scripts/python tools/oracle/beams.py tools/oracle/out/oracle.json tests/golden/golden.json src/data/pool.json tests/oracle/random-beams.json
 ORACLE_REQUIRED=1 npm run oracle
 ```
 

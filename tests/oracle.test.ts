@@ -3,7 +3,7 @@
  *
  * Run the oracle first:
  *   tools/oracle/.venv/Scripts/python tools/oracle/beams.py tools/oracle/out/oracle.json \
- *     tests/golden/golden.json tests/oracle/random-beams.json
+ *     tests/golden/golden.json src/data/pool.json tests/oracle/random-beams.json
  * Locally the test is skipped if the oracle output is missing; in CI (ORACLE_REQUIRED=1)
  * a missing file is a failure.
  *
@@ -68,7 +68,12 @@ interface OracleResult {
 function inputs(): [string, Exercise][] {
   const g = JSON.parse(readFileSync(resolve(ROOT, 'tests/golden/golden.json'), 'utf8')) as { cases: { id: string; exercise: Exercise }[] };
   const r = JSON.parse(readFileSync(RANDOM, 'utf8')) as { beams: { id: string; exercise: Exercise }[] };
-  return [...g.cases.map((c) => [c.id, c.exercise] as [string, Exercise]), ...r.beams.map((b) => [b.id, b.exercise] as [string, Exercise])];
+  const pool = JSON.parse(readFileSync(resolve(ROOT, 'src/data/pool.json'), 'utf8')) as { exercises: Exercise[] };
+  return [
+    ...g.cases.map((c) => [c.id, c.exercise] as [string, Exercise]),
+    ...pool.exercises.map((e) => [e.id, e] as [string, Exercise]),
+    ...r.beams.map((b) => [b.id, b.exercise] as [string, Exercise]),
+  ];
 }
 
 const have = existsSync(OUT);

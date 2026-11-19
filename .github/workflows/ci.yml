@@ -34,7 +34,7 @@ jobs:
       - run: npm ci
       # The SymPy oracle solves the golden and the fixed random beams independently;
       # tests/oracle.test.ts compares it exactly with solver A and with solver B.
-      - run: python tools/oracle/beams.py tools/oracle/out/oracle.json tests/golden/golden.json tests/oracle/random-beams.json
+      - run: python tools/oracle/beams.py tools/oracle/out/oracle.json tests/golden/golden.json src/data/pool.json tests/oracle/random-beams.json
       - run: npx vitest run tests/oracle.test.ts
         env:
           ORACLE_REQUIRED: '1'

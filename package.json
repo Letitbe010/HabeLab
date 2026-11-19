@@ -14,7 +14,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "oracle": "vitest run tests/oracle.test.ts",
-    "oracle:py": "python tools/oracle/beams.py tools/oracle/out/oracle.json tests/golden/golden.json tests/oracle/random-beams.json"
+    "oracle:py": "python tools/oracle/beams.py tools/oracle/out/oracle.json tests/golden/golden.json src/data/pool.json tests/oracle/random-beams.json"
   },
   "dependencies": {
     "react": "18.3.1",
