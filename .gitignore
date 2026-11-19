@@ -9,3 +9,4 @@ tools/oracle/__pycache__/
 tools/oracle/out/
 .DS_Store
 screenshots/
+.claude/
