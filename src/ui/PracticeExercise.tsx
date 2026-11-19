@@ -4,6 +4,8 @@ import type { Exercise } from '../core/model';
 import { type GradeResult, type Item, type ModeAAnswer, grade } from '../core/grader';
 import { type BResult, type ModeBAnswer, gradeB } from '../core/diagramGrader';
 import { DiagramEditor } from './DiagramEditor';
+import { type Hypothesis, diagnose } from '../core/diagnosis';
+import { formatSmart, gValue } from '../core/units';
 import { generate } from '../core/generator';
 import { keyPoints } from '../core/keyPoints';
 import * as R from '../core/rational';
@@ -41,6 +43,7 @@ export function PracticeExercise({ source }: { source: Source }) {
     return { forceUnit: u?.force ?? 'N', momentUnit: u?.moment ?? 'N·m', points: [{ x: '' }] };
   });
   const [result, setResult] = useState<GradeResult | BResult | null>(null);
+  const [hyps, setHyps] = useState<Hypothesis[]>([]);
   const [mode, setMode] = useState<'A' | 'B'>(() => (loadJSON<string>('habelab.mode') === 'B' ? 'B' : 'A'));
   const [ansB, setAnsB] = useState<ModeBAnswer>(() => {
     const saved = loadJSON<ModeBAnswer>(`${storeKey}.B`);
@@ -70,12 +73,16 @@ export function PracticeExercise({ source }: { source: Source }) {
     setAnsB(a);
     saveJSON(`${storeKey}.B`, a);
   };
-  const onGrade = () =>
-    setResult(
-      useB
-        ? gradeB(ex, { ...ansB, reactions: ans.reactions, forceUnit: ans.forceUnit, momentUnit: ans.momentUnit }, { g: settings.g, vFlip: settings.vFlip })
-        : grade(ex, ans, { g: settings.g, vFlip: settings.vFlip }),
-    );
+  const onGrade = () => {
+    const opts = { g: settings.g, vFlip: settings.vFlip };
+    const r = useB ? gradeB(ex, { ...ansB, reactions: ans.reactions, forceUnit: ans.forceUnit, momentUnit: ans.momentUnit }, opts) : grade(ex, ans, opts);
+    setResult(r);
+    // §8.4: hypotheses of typical mistakes (mode B answers are read as key values at the nodes)
+    const asA: ModeAAnswer = useB
+      ? { forceUnit: ans.forceUnit, momentUnit: ans.momentUnit, reactions: ans.reactions, points: ansB.nodes.map((n) => ({ x: n.x, Vl: n.Vl, Vr: n.Vr, Ml: n.Ml, Mr: n.Mr })) }
+      : ans;
+    setHyps(r.invalid || r.incomplete || r.score >= 10 ? [] : diagnose(ex, asA, opts));
+  };
   const switchMode = (m: 'A' | 'B') => {
     setMode(m);
     setResult(null);
@@ -203,6 +210,23 @@ export function PracticeExercise({ source }: { source: Source }) {
                 ))}
               </div>
               {result.missingPoints.length > 0 && <p className="note warn">{t('ex.missingPoints', { xs: result.missingPoints.map((x) => num(x)).join('; ') })}</p>}
+              {result.score < 10 && (
+                <div className="diag">
+                  <b>{t('diag.title')}</b>
+                  {hyps.length ? (
+                    <ul>
+                      {hyps.map((h) => (
+                        <li key={h.id}>
+                          {t(`diag.${h.id}`, { g: formatSmart(gValue(settings.g)), gs: formatSmart(gValue(settings.g)), ...h.info })}{' '}
+                          <span className="vals">{t('diag.fit', { n: h.explained, m: h.typed })}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p>{t('diag.none')}</p>
+                  )}
+                </div>
+              )}
             </>
           )}
           <ul className="res-list">

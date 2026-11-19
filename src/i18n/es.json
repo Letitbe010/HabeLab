@@ -121,5 +121,22 @@
   "shape.parab-up": "parábola, cóncava hacia arriba (∪)",
   "shape.parab-down": "parábola, cóncava hacia abajo (∩)",
   "shape.cubic": "cúbica",
-  "res.sample": "comprobación por muestreo"
+  "res.sample": "comprobación por muestreo",
+  "diag.title": "Diagnóstico de errores",
+  "diag.none": "No se ha identificado el error automáticamente. Revisa la solución completa.",
+  "diag.fit": "({n} de tus {m} valores encajan con esta hipótesis)",
+  "diag.units-kg": "Parece que no has pasado a N las cargas dadas en kg: tus resultados están en kgf. Multiplica por g (1 kg → {g} N).",
+  "diag.units-1000": "Parece que has mezclado kN y N (o kN·m y N·m): tus valores son 1000 veces mayores en la unidad elegida.",
+  "diag.units-0.001": "Parece que has mezclado kN y N (o kN·m y N·m): tus valores son 1000 veces menores en la unidad elegida.",
+  "diag.g-other": "Parece que has usado g = {g} m/s²; en los ajustes está g = {gs} m/s².",
+  "diag.v-sign": "Parece que has usado el convenio de signos de V contrario. Si tu libro lo hace así, cámbialo en los ajustes; si no, recuerda: resultante izquierda hacia arriba → V > 0.",
+  "diag.m-sign": "Parece que todos los signos de M están invertidos. Recuerda: M > 0 con la fibra inferior traccionada (cóncava hacia arriba).",
+  "diag.reactions-swapped": "Parece que has intercambiado las dos reacciones (la de A en B y viceversa). Revisa respecto a qué punto has tomado momentos.",
+  "diag.dims-cumulative-as-chained": "Parece que has leído las cotas acumuladas desde el origen como si fueran encadenadas (x = 1, 2, 3 m → tramos de 1, 2, 3 m).",
+  "diag.dims-chained-as-cumulative": "Parece que has leído las cotas de los tramos como si fueran acumuladas desde el origen.",
+  "diag.resultant-centre": "Parece que has puesto la resultante de la carga triangular en el centro. La resultante de un triángulo está a L/3 del lado mayor (2L/3 del menor).",
+  "diag.moment-jump-forgotten": "Parece que has olvidado el salto que produce el momento puntual en el diagrama de M (M salta +M₀ con un momento horario).",
+  "diag.moment-reversed": "Parece que has tomado el sentido del momento puntual al revés.",
+  "diag.jumps-swapped": "Parece que has confundido V⁻ y V⁺: V⁻ es el valor a la izquierda del punto y V⁺ a la derecha.",
+  "diag.p-neighbour": "Parece que has calculado V o M en otro punto crítico cercano a p (x = {x} m), no en p."
 }

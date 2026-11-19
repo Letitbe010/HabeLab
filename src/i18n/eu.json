@@ -121,5 +121,22 @@
   "shape.parab-up": "parabola, ahurra gora (∪)",
   "shape.parab-down": "parabola, ahurra behera (∩)",
   "shape.cubic": "kubikoa",
-  "res.sample": "lagin-egiaztapena"
+  "res.sample": "lagin-egiaztapena",
+  "diag.title": "Akatsen diagnostikoa",
+  "diag.none": "Akatsa ez da automatikoki identifikatu. Begiratu ebazpen osoa.",
+  "diag.fit": "({m} baliotatik {n} bat datoz hipotesi honekin)",
+  "diag.units-kg": "Dirudienez, kg-tan emandako kargak ez dituzu N-tara bihurtu: zure emaitzak kgf-tan daude. Biderkatu g-rekin (1 kg → {g} N).",
+  "diag.units-1000": "Dirudienez, kN eta N (edo kN·m eta N·m) nahastu dituzu: zure balioak 1000 aldiz handiagoak dira aukeratutako unitatean.",
+  "diag.units-0.001": "Dirudienez, kN eta N (edo kN·m eta N·m) nahastu dituzu: zure balioak 1000 aldiz txikiagoak dira aukeratutako unitatean.",
+  "diag.g-other": "Dirudienez, g = {g} m/s² erabili duzu; ezarpenetan g = {gs} m/s² dago.",
+  "diag.v-sign": "Dirudienez, V-ren zeinu-konbentzio alderantzizkoa erabili duzu. Zure liburuak hala egiten badu, aldatu ezarpenetan; bestela, gogoratu: ezkerreko erresultantea gorantz → V > 0.",
+  "diag.m-sign": "Dirudienez, M-ren zeinu guztiak alderantziz daude. Gogoratu: M > 0 beheko zuntza trakzioan dagoenean (ahurra gora).",
+  "diag.reactions-swapped": "Dirudienez, bi erreakzioak trukatu dituzu (A-rena B-n eta alderantziz). Begiratu momentuak zein puntutarekiko hartu dituzun.",
+  "diag.dims-cumulative-as-chained": "Dirudienez, jatorritik metatutako neurriak tarteka balira bezala irakurri dituzu (x = 1, 2, 3 m → tarteak 1, 2, 3 m).",
+  "diag.dims-chained-as-cumulative": "Dirudienez, tarteen neurriak jatorritik metatuak balira bezala irakurri dituzu.",
+  "diag.resultant-centre": "Dirudienez, karga triangeluarraren erresultantea erdian jarri duzu. Triangelu baten erresultantea alde handitik L/3-ra dago (txikitik 2L/3-ra).",
+  "diag.moment-jump-forgotten": "Dirudienez, momentu puntualak M diagraman sortzen duen jauzia ahaztu duzu (M-k +M₀ jauzi egiten du erloju-orratzen noranzkoko momentu batean).",
+  "diag.moment-reversed": "Dirudienez, momentu puntualaren noranzkoa alderantziz hartu duzu.",
+  "diag.jumps-swapped": "Dirudienez, V⁻ eta V⁺ nahastu dituzu: V⁻ puntuaren ezkerrekoa da, eta V⁺ eskuinekoa.",
+  "diag.p-neighbour": "Dirudienez, V edo M p puntuaren ondoko beste puntu kritiko batean kalkulatu duzu (x = {x} m), ez p-n."
 }
