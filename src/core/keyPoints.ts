@@ -38,6 +38,9 @@ export interface Extremes {
   xMmax: KeyValue;
   Mmin: KeyValue;
   xMmin: KeyValue;
+  /** |M|max: what "M_max" means in most exam statements (e.g. 15 kN·m for a cantilever). */
+  absMmax: KeyValue;
+  xAbsMmax: KeyValue;
   absVmax: KeyValue;
   xAbsVmax: KeyValue;
 }
@@ -174,26 +177,42 @@ export function keyPoints(sol: AnalyticSolution): KeyPoint[] {
 }
 
 /**
- * Extremes of M (signed max and min) and of |V|, with their positions.
+ * Extremes of M (signed max and min, and |M|max) and of |V|, with their positions.
+ * Only limits INSIDE the beam count: at x = 0 the right limits (V⁺, M⁺), at x = L the
+ * left limits (V⁻, M⁻), elsewhere both. (V⁻, M⁻ at 0 and V⁺, M⁺ at L are 0 by
+ * construction and are not values of the diagram.)
  * If the same extreme value occurs at several places, the leftmost one is reported.
  * |V| inside a segment can only peak where q = 0 changes sign (dV/dx = −q), so those
  * points are checked too.
  */
 export function extremes(sol: AnalyticSolution, kps: KeyPoint[] = keyPoints(sol)): Extremes {
-  let Mmax = kps[0]?.Ml as KeyValue;
-  let xMmax = kps[0]?.x as KeyValue;
-  let Mmin = Mmax;
-  let xMmin = xMmax;
-  let absVmax: KeyValue = { exact: ZERO, value: 0 };
-  let xAbsVmax: KeyValue = { exact: ZERO, value: 0 };
+  const L = sol.beam.length;
+  const inner = (k: KeyPoint, l: KeyValue, r: KeyValue): KeyValue[] => {
+    if (k.x.exact && isZero(k.x.exact)) return [r];
+    if (k.x.exact && eq(k.x.exact, L)) return [l];
+    return [l, r];
+  };
   const better = (a: KeyValue, b: KeyValue) => (a.exact && b.exact ? cmp(a.exact, b.exact) : Math.sign(a.value - b.value));
   const absOf = (a: KeyValue): KeyValue => (a.exact ? kv(sign(a.exact) < 0 ? neg(a.exact) : a.exact) : kn(Math.abs(a.value)));
+
+  const first = kps[0];
+  if (!first) throw new RangeError('extremes: no key points');
+  let Mmax = first.Mr;
+  let xMmax = first.x;
+  let Mmin = first.Mr;
+  let xMmin = first.x;
+  let absMmax = absOf(first.Mr);
+  let xAbsMmax = first.x;
+  let absVmax = absOf(first.Vr);
+  let xAbsVmax = first.x;
   for (const k of kps) {
-    for (const m of [k.Ml, k.Mr]) {
+    for (const m of inner(k, k.Ml, k.Mr)) {
       if (better(m, Mmax) > 0) [Mmax, xMmax] = [m, k.x];
       if (better(m, Mmin) < 0) [Mmin, xMmin] = [m, k.x];
+      const a = absOf(m);
+      if (better(a, absMmax) > 0) [absMmax, xAbsMmax] = [a, k.x];
     }
-    for (const v of [k.Vl, k.Vr]) {
+    for (const v of inner(k, k.Vl, k.Vr)) {
       const a = absOf(v);
       if (better(a, absVmax) > 0) [absVmax, xAbsVmax] = [a, k.x];
     }
@@ -205,5 +224,5 @@ export function extremes(sol: AnalyticSolution, kps: KeyPoint[] = keyPoints(sol)
       if (better(a, absVmax) > 0) [absVmax, xAbsVmax] = [a, kv(r.exact)];
     }
   }
-  return { Mmax, xMmax, Mmin, xMmin, absVmax, xAbsVmax };
+  return { Mmax, xMmax, Mmin, xMmin, absMmax, xAbsMmax, absVmax, xAbsVmax };
 }
