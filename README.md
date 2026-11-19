@@ -4,6 +4,8 @@
 
 **ES** — Aplicación para entrenar ejercicios de vigas isostáticas (reacciones, diagrama de esfuerzos cortantes y diagrama de momentos flectores) para la OPE de Euskadi, especialidad 1508 (*Organización y Proyectos de Fabricación Mecánica*). La corrección la realiza un solucionador matemático determinista (racionales exactos), no una IA.
 
+Aplikazioa / Aplicación: https://letitbe010.github.io/HabeLab/ (lehen despliegearen ondoren / tras el primer despliegue)
+
 ## Garapena / Desarrollo
 
 ```bash
