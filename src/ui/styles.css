@@ -214,3 +214,12 @@ svg .dval { font-size: 13px; fill: var(--ink); font-weight: 600; paint-order: st
   .prow { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .fld.w8 .num-in { width: 100%; max-width: 14em; }
 }
+
+/* mode B editor */
+.seg-shapes { display: flex; flex-wrap: wrap; gap: 8px; align-items: flex-end; width: 100%; border-top: 1px dashed var(--line); padding-top: 6px; }
+.seg-shapes .unit { width: 100%; padding: 0; font-size: 13px; }
+.seg-shapes select { min-width: 11em; }
+.fld.correct select { border-color: var(--ok); background: var(--okbg); }
+.fld.wrong select { border-color: var(--bad); background: var(--badbg); }
+.fld.missing select { border-color: var(--warn); background: var(--warnbg); }
+@media (max-width: 600px) { .seg-shapes { grid-column: 1 / -1; } .seg-shapes .fld, .seg-shapes select { width: 100%; } }

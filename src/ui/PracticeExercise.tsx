@@ -2,6 +2,8 @@
 import { useMemo, useState } from 'react';
 import type { Exercise } from '../core/model';
 import { type GradeResult, type Item, type ModeAAnswer, grade } from '../core/grader';
+import { type BResult, type ModeBAnswer, gradeB } from '../core/diagramGrader';
+import { DiagramEditor } from './DiagramEditor';
 import { generate } from '../core/generator';
 import { keyPoints } from '../core/keyPoints';
 import * as R from '../core/rational';
@@ -38,7 +40,14 @@ export function PracticeExercise({ source }: { source: Source }) {
     const u = ex ? displayUnits(ex) : null; // answer in the statement's units by default
     return { forceUnit: u?.force ?? 'N', momentUnit: u?.moment ?? 'N·m', points: [{ x: '' }] };
   });
-  const [result, setResult] = useState<GradeResult | null>(null);
+  const [result, setResult] = useState<GradeResult | BResult | null>(null);
+  const [mode, setMode] = useState<'A' | 'B'>(() => (loadJSON<string>('habelab.mode') === 'B' ? 'B' : 'A'));
+  const [ansB, setAnsB] = useState<ModeBAnswer>(() => {
+    const saved = loadJSON<ModeBAnswer>(`${storeKey}.B`);
+    if (saved) return saved;
+    const u = ex ? displayUnits(ex) : null;
+    return { forceUnit: u?.force ?? 'N', momentUnit: u?.moment ?? 'N·m', nodes: [{ x: '' }, { x: '' }] };
+  });
   const [showSol, setShowSol] = useState(false);
 
   const check = useMemo(() => (ex ? verifyBeam(exerciseToBeam(ex, settings.g)) : null), [ex, settings.g]);
@@ -55,7 +64,23 @@ export function PracticeExercise({ source }: { source: Source }) {
     setAns(a);
     saveJSON(storeKey, a);
   };
-  const onGrade = () => setResult(grade(ex, ans, { g: settings.g, vFlip: settings.vFlip }));
+  const useB = mode === 'B' && !!ex.ask.diagrams;
+  const updateB = (a: ModeBAnswer) => {
+    // the reactions part of the form is shared between both modes
+    setAnsB(a);
+    saveJSON(`${storeKey}.B`, a);
+  };
+  const onGrade = () =>
+    setResult(
+      useB
+        ? gradeB(ex, { ...ansB, reactions: ans.reactions, forceUnit: ans.forceUnit, momentUnit: ans.momentUnit }, { g: settings.g, vFlip: settings.vFlip })
+        : grade(ex, ans, { g: settings.g, vFlip: settings.vFlip }),
+    );
+  const switchMode = (m: 'A' | 'B') => {
+    setMode(m);
+    setResult(null);
+    saveJSON('habelab.mode', m);
+  };
   const blocked = !!result && (result.invalid || result.incomplete);
   const step = showSol ? 4 : result && !blocked ? 3 : 2;
 
@@ -76,13 +101,16 @@ export function PracticeExercise({ source }: { source: Source }) {
   const fF = (ans.forceUnit === 'kN' ? 1000 : 1) * (settings.vFlip ? -1 : 1); // overlay in the solver's convention
   const fM = ans.momentUnit === 'kN·m' ? 1000 : 1;
   const overlay: OverlayPoint[] = [];
-  for (const r of ans.points ?? []) {
+  for (const r of useB ? ansB.nodes : (ans.points ?? [])) {
     const x = toSI(r.x, 1);
     if (x === undefined) continue;
     overlay.push({ x, Vl: toSI(r.Vl, fF), Vr: toSI(r.Vr, fF), Ml: toSI(r.Ml, fM), Mr: toSI(r.Mr, fM) });
   }
 
-  const itemLabel = (it: Item): string => {
+  const itemLabel = (it: Item | BResult['items'][number]): string => {
+    if (it.id.startsWith('sV:') || it.id.startsWith('sM:')) return `${t(it.id[1] === 'V' ? 'ed.shapeV' : 'ed.shapeM')} (${it.id.slice(3).replace('-', ' – ').replace(/\.?0+(?=\D|$)/g, '')} m)`;
+    if (it.id.startsWith('qV:') || it.id.startsWith('qM:')) return `${it.id[1]} · ${t('res.sample')} (x ≥ ${num(it.x ?? 0)} m)`;
+    if (it.id.startsWith('ext')) return `${t('ed.extM')} (x = ${num(it.x ?? 0)} m)`;
     const [head, rest] = it.id.split(':') as [string, string?];
     const at = it.x !== undefined ? ` (x = ${num(it.x)} m)` : '';
     const names: Record<string, string> = { V: 'V', 'V-': 'V⁻', 'V+': 'V⁺', M: 'M', 'M-': 'M⁻', 'M+': 'M⁺', Vp: 'V', 'Vp-': 'V⁻', 'Vp+': 'V⁺', Mp: 'M' };
@@ -91,10 +119,10 @@ export function PracticeExercise({ source }: { source: Source }) {
     if (head === 'mmax') return '|M|max';
     if (head === 'xmax') return 'x (|M|max)';
     if (head === 'Veq' || head === 'Meq') return `${head === 'Veq' ? 'V(x)' : 'M(x)'}${at}`;
-    if (head === 'x') return `x = ${it.raw ?? ''}`;
+    if (head === 'x') return `x = ${('raw' in it ? it.raw : undefined) ?? ''}`;
     return `${names[head] ?? head}${head.startsWith('Vp') || head === 'Mp' ? ` ${rest}` : ''}${at}`;
   };
-  const valText = (it: Item, v: number | null) => {
+  const valText = (it: Item | BResult['items'][number], v: number | null) => {
     if (v === null) return '—';
     if (it.part === 'xmax') return `${num(v)} m`;
     const isM = it.part === 'M' || it.part === 'Mp' || it.part === 'mmax' || it.id.startsWith('M:');
@@ -124,7 +152,24 @@ export function PracticeExercise({ source }: { source: Source }) {
       <BeamFigure ex={ex} dims={settings.dims} />
       <p className="note">{settings.vFlip ? t('ex.conventionAlt') : t('ex.convention')}</p>
 
-      <KeyValuesForm ex={ex} ans={ans} onChange={update} result={result} />
+      {ex.ask.diagrams && (
+        <div className="choice" role="group" aria-label="mode" style={{ margin: '10px 0' }}>
+          {(['A', 'B'] as const).map((m) => (
+            <button key={m} className={`small ${mode === m ? 'sel' : ''}`} aria-pressed={mode === m} onClick={() => switchMode(m)}>
+              {t(`mode.${m}`)}
+            </button>
+          ))}
+        </div>
+      )}
+      <KeyValuesForm ex={useB ? { ...ex, ask: { ...ex.ask, diagrams: false } } : ex} ans={ans} onChange={update} result={useB ? null : (result as GradeResult | null)} />
+      {useB && (
+        <DiagramEditor
+          ex={ex}
+          ans={{ ...ansB, forceUnit: ans.forceUnit, momentUnit: ans.momentUnit }}
+          onChange={(a) => updateB({ ...a })}
+          result={result as BResult | null}
+        />
+      )}
 
       <div className="actions">
         <button className="primary" onClick={onGrade}>
@@ -165,6 +210,10 @@ export function PracticeExercise({ source }: { source: Source }) {
                   {ICON[it.status]} {t(`st.${it.status}`)}
                 </span>
                 <span className="what">{itemLabel(it)}</span>
+                {'expectedShape' in it && it.expectedShape && <span className="vals">{t('res.expected', { v: t(`shape.${it.expectedShape}`) })}</span>}
+                {'givenShape' in it && it.givenShape && it.status !== 'correct' && (
+                  <span className="vals">{t('res.given', { v: it.givenShape.split(',').map((s) => t(`shape.${s}`)).join(', ') })}</span>
+                )}
                 {it.expected !== null && <span className="vals">{t('res.expected', { v: valText(it, it.expected) })}</span>}
                 {it.given !== null && <span className="vals">{t('res.given', { v: valText(it, it.given) })}</span>}
               </li>
