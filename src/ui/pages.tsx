@@ -100,6 +100,11 @@ export function StartPage() {
           <div>
             <b>{t('start.step4')}</b>
             <small>{t('start.step4.sub')}</small>
+            <p style={{ margin: '4px 0' }}>
+              <a className="button primary" href={hrefOf({ name: 'exam' })}>
+                {t('exam.open')}
+              </a>
+            </p>
             <ul className="plain">
               {ope.map((e) => (
                 <li key={e.id}>

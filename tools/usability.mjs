@@ -59,6 +59,8 @@ const SCREENS = [
   ['theory-ardatzak', '#/teoria/ardatzak'],
   ['theory-erlazioak', '#/teoria/erlazioak'],
   ['theory-formulak', '#/teoria/formulak'],
+  ['exam-start', '#/azterketa'],
+  ['exam-run', '#/azterketa/777/45'],
   ['progress', '#/aurrerapena'],
   ['settings', '#/ezarpenak'],
   ['about', '#/honi-buruz'],

@@ -6,6 +6,7 @@
  *   #/praktika/pool/<id>                     → pool exercise
  *   #/ebatziak, #/ebatziak/<id>              → worked exercises
  *   #/teoria, #/teoria/<id>                  → theory
+ *   #/azterketa, #/azterketa/<seed>/<min>    → exam mode (start, running exam)
  *   #/aurrerapena                            → progress
  *   #/ezarpenak, #/honi-buruz                → settings, about
  */
@@ -22,6 +23,8 @@ export type Route =
   | { name: 'settings' }
   | { name: 'about' }
   | { name: 'progress' }
+  | { name: 'exam' }
+  | { name: 'examRun'; seed: number; minutes: number }
   | { name: 'worked' }
   | { name: 'workedItem'; id: string }
   | { name: 'theory' }
@@ -39,6 +42,8 @@ export function parseHash(hash: string): Route {
   if (p[0] === 'ezarpenak') return { name: 'settings' };
   if (p[0] === 'honi-buruz') return { name: 'about' };
   if (p[0] === 'aurrerapena') return { name: 'progress' };
+  if (p[0] === 'azterketa' && /^\d+$/.test(p[1] ?? '') && /^\d+$/.test(p[2] ?? '')) return { name: 'examRun', seed: Number(p[1]), minutes: Math.min(180, Math.max(1, Number(p[2]))) };
+  if (p[0] === 'azterketa') return { name: 'exam' };
   if (p[0] === 'ebatziak') return p[1] ? { name: 'workedItem', id: p[1] } : { name: 'worked' };
   if (p[0] === 'teoria') return p[1] ? { name: 'theoryTopic', id: p[1] } : { name: 'theory' };
   return { name: 'start' };
@@ -58,6 +63,10 @@ export function hrefOf(r: Route): string {
       return '#/honi-buruz';
     case 'progress':
       return '#/aurrerapena';
+    case 'exam':
+      return '#/azterketa';
+    case 'examRun':
+      return `#/azterketa/${r.seed}/${r.minutes}`;
     case 'worked':
       return '#/ebatziak';
     case 'workedItem':

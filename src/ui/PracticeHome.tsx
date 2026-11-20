@@ -47,6 +47,16 @@ export function PracticeHome() {
         </div>
       </div>
 
+      <h2 className="sec">{t('exam.title')}</h2>
+      <div className="ask">
+        <p style={{ margin: 0 }}>{t('exam.lead')}</p>
+        <div className="actions">
+          <a className="button primary" href={hrefOf({ name: 'exam' })}>
+            {t('exam.open')}
+          </a>
+        </div>
+      </div>
+
       <h2 className="sec">{t('home.pool')}</h2>
       <div className="tiles">
         {exercises.map((e) => (

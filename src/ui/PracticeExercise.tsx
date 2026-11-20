@@ -1,9 +1,10 @@
 /** Exercise screen: ① statement → ② solve → ③ grading → ④ solution (spec §11.1). */
 import { useMemo, useState } from 'react';
 import type { Exercise } from '../core/model';
-import { type GradeResult, type Item, type ModeAAnswer, grade } from '../core/grader';
+import { type GradeResult, type ModeAAnswer, grade } from '../core/grader';
 import { type BResult, type ModeBAnswer, gradeB } from '../core/diagramGrader';
 import { DiagramEditor } from './DiagramEditor';
+import { ResultItems } from './ResultItems';
 import { recordAttempt } from './progress';
 import { type Hypothesis, diagnose } from '../core/diagnosis';
 import { formatSmart, gValue } from '../core/units';
@@ -17,7 +18,7 @@ import pool from '../data/pool.json';
 import { useT } from '../i18n';
 import { BeamFigure } from './BeamFigure';
 import type { OverlayPoint } from './DiagramView';
-import { displayUnits, fmtF, fmtM, num } from './format';
+import { displayUnits, num } from './format';
 import { KeyValuesForm } from './KeyValuesForm';
 import { type AskChoice, hrefOf } from './router';
 import { loadJSON, saveJSON, useSettings } from './settings';
@@ -131,32 +132,6 @@ export function PracticeExercise({ source }: { source: Source }) {
     overlay.push({ x, Vl: toSI(r.Vl, fF), Vr: toSI(r.Vr, fF), Ml: toSI(r.Ml, fM), Mr: toSI(r.Mr, fM) });
   }
 
-  const itemLabel = (it: Item | BResult['items'][number]): string => {
-    // segment ids look like "sV:0.0000-6.0000" (x1-x2, both ≥ 0)
-    const range = (id: string) => id.slice(3).split('-').map((v) => num(Number(v))).join(' – ');
-    if (it.id.startsWith('sV:') || it.id.startsWith('sM:')) return `${t(it.id[1] === 'V' ? 'ed.shapeV' : 'ed.shapeM')} (${range(it.id)} m)`;
-    if (it.id.startsWith('qV:') || it.id.startsWith('qM:')) return `${it.id[1]} · ${t('res.sample')} (${range(it.id)} m)`;
-    if (it.id.startsWith('ext')) return `${t('ed.extM')} (x = ${num(it.x ?? 0)} m)`;
-    const [head, rest] = it.id.split(':') as [string, string?];
-    const at = it.x !== undefined ? ` (x = ${num(it.x)} m)` : '';
-    const names: Record<string, string> = { V: 'V', 'V-': 'V⁻', 'V+': 'V⁺', M: 'M', 'M-': 'M⁻', 'M+': 'M⁺', Vp: 'V', 'Vp-': 'V⁻', 'Vp+': 'V⁺', Mp: 'M' };
-    if (head === 'R') return `R${rest}`;
-    if (head === 'M' && it.part === 'reactions') return `M${rest}`;
-    if (head === 'mmax') return '|M|max';
-    if (head === 'xmax') return 'x (|M|max)';
-    if (head === 'Veq' || head === 'Meq') return `${head === 'Veq' ? 'V(x)' : 'M(x)'}${at}`;
-    if (head === 'x') return `x = ${('raw' in it ? it.raw : undefined) ?? ''}`;
-    return `${names[head] ?? head}${head.startsWith('Vp') || head === 'Mp' ? ` ${rest}` : ''}${at}`;
-  };
-  const valText = (it: Item | BResult['items'][number], v: number | null) => {
-    if (v === null) return '—';
-    if (it.part === 'xmax') return `${num(v)} m`;
-    const isM = it.part === 'M' || it.part === 'Mp' || it.part === 'mmax' || it.id.startsWith('M:');
-    const shown = (it.part === 'V' || it.part === 'Vp') && settings.vFlip ? -v : v;
-    return isM ? fmtM(shown, units) : fmtF(shown, units);
-  };
-  const ICON: Record<string, string> = { correct: '✓', wrong: '✗', missing: '!', invalid: '?' };
-
   return (
     <section className="card">
       <div className="ex-top">
@@ -252,22 +227,7 @@ export function PracticeExercise({ source }: { source: Source }) {
               )}
             </>
           )}
-          <ul className="res-list">
-            {result.items.map((it, i) => (
-              <li key={`${it.id}-${i}`}>
-                <span className={`chip ${it.status}`}>
-                  {ICON[it.status]} {t(`st.${it.status}`)}
-                </span>
-                <span className="what">{itemLabel(it)}</span>
-                {'expectedShape' in it && it.expectedShape && <span className="vals">{t('res.expected', { v: t(`shape.${it.expectedShape}`) })}</span>}
-                {'givenShape' in it && it.givenShape && it.status !== 'correct' && (
-                  <span className="vals">{t('res.given', { v: it.givenShape.split(',').map((s) => t(`shape.${s}`)).join(', ') })}</span>
-                )}
-                {it.expected !== null && <span className="vals">{t('res.expected', { v: valText(it, it.expected) })}</span>}
-                {it.given !== null && <span className="vals">{t('res.given', { v: valText(it, it.given) })}</span>}
-              </li>
-            ))}
-          </ul>
+          <ResultItems items={result.items} units={units} vFlip={settings.vFlip} />
           {!showSol && (
             <div className="actions">
               <button onClick={() => setShowSol(true)}>{t('ex.showSolution')}</button>

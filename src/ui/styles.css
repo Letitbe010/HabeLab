@@ -296,3 +296,8 @@ a.button.primary { background: var(--ink); color: var(--card); border-color: var
 .rot-grid figure { margin: 0; padding: 6px; }
 .rot-grid svg { width: 100%; height: auto; display: block; }
 .rot-grid figcaption { font-size: 14px; color: var(--text2); padding: 4px 6px 6px; }
+
+/* exam mode */
+.exam-bar { position: sticky; top: 0; z-index: 5; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; background: var(--card); padding: 8px 0; border-bottom: 1px solid var(--line); margin-bottom: 8px; }
+.exam-bar .clock { font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums; padding: 2px 12px; border-radius: 10px; border: 1px solid var(--line); background: var(--surface); }
+.exam-bar.late .clock { color: var(--bad); border-color: var(--bad); background: var(--badbg); }
