@@ -6,67 +6,266 @@
       "origin": "pool",
       "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
       "difficulty": 1,
-      "beam": { "length": "5", "supports": [{ "type": "pin", "x": "0", "label": "A" }, { "type": "roller", "x": "5", "label": "B" }] },
-      "loads": [{ "kind": "point", "x": "2", "F": "10", "unit": "kN" }],
-      "ask": { "reactions": true, "diagrams": true }
+      "beam": {
+        "length": "5",
+        "supports": [
+          {
+            "type": "pin",
+            "x": "0",
+            "label": "A"
+          },
+          {
+            "type": "roller",
+            "x": "5",
+            "label": "B"
+          }
+        ]
+      },
+      "loads": [
+        {
+          "kind": "point",
+          "x": "2",
+          "F": "10",
+          "unit": "kN"
+        }
+      ],
+      "ask": {
+        "reactions": true,
+        "diagrams": true
+      }
     },
     {
       "id": "pool-W4",
       "origin": "pool",
       "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
       "difficulty": 2,
-      "beam": { "length": "6", "supports": [{ "type": "pin", "x": "0", "label": "A" }, { "type": "roller", "x": "6", "label": "B" }] },
-      "loads": [{ "kind": "udl", "x1": "0", "x2": "3", "q": "8", "unit": "kN/m" }],
-      "ask": { "reactions": true, "diagrams": true }
+      "beam": {
+        "length": "6",
+        "supports": [
+          {
+            "type": "pin",
+            "x": "0",
+            "label": "A"
+          },
+          {
+            "type": "roller",
+            "x": "6",
+            "label": "B"
+          }
+        ]
+      },
+      "loads": [
+        {
+          "kind": "udl",
+          "x1": "0",
+          "x2": "3",
+          "q": "8",
+          "unit": "kN/m"
+        }
+      ],
+      "ask": {
+        "reactions": true,
+        "diagrams": true
+      }
     },
     {
       "id": "pool-W5",
       "origin": "pool",
       "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
       "difficulty": 2,
-      "beam": { "length": "8", "supports": [{ "type": "pin", "x": "0", "label": "A" }, { "type": "roller", "x": "8", "label": "B" }] },
+      "beam": {
+        "length": "8",
+        "supports": [
+          {
+            "type": "pin",
+            "x": "0",
+            "label": "A"
+          },
+          {
+            "type": "roller",
+            "x": "8",
+            "label": "B"
+          }
+        ]
+      },
       "loads": [
-        { "kind": "point", "x": "2", "F": "20", "unit": "kN" },
-        { "kind": "udl", "x1": "4", "x2": "8", "q": "5", "unit": "kN/m" }
+        {
+          "kind": "point",
+          "x": "2",
+          "F": "20",
+          "unit": "kN"
+        },
+        {
+          "kind": "udl",
+          "x1": "4",
+          "x2": "8",
+          "q": "5",
+          "unit": "kN/m"
+        }
       ],
-      "ask": { "reactions": true, "diagrams": true }
+      "ask": {
+        "reactions": true,
+        "diagrams": true
+      }
     },
     {
       "id": "pool-W7",
       "origin": "pool",
       "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
       "difficulty": 3,
-      "beam": { "length": "8", "supports": [{ "type": "pin", "x": "1", "label": "A" }, { "type": "roller", "x": "7", "label": "B" }] },
+      "beam": {
+        "length": "8",
+        "supports": [
+          {
+            "type": "pin",
+            "x": "1",
+            "label": "A"
+          },
+          {
+            "type": "roller",
+            "x": "7",
+            "label": "B"
+          }
+        ]
+      },
       "loads": [
-        { "kind": "point", "x": "0", "F": "6", "unit": "kN" },
-        { "kind": "udl", "x1": "0", "x2": "8", "q": "2", "unit": "kN/m" },
-        { "kind": "point", "x": "8", "F": "6", "unit": "kN" }
+        {
+          "kind": "point",
+          "x": "0",
+          "F": "6",
+          "unit": "kN"
+        },
+        {
+          "kind": "udl",
+          "x1": "0",
+          "x2": "8",
+          "q": "2",
+          "unit": "kN/m"
+        },
+        {
+          "kind": "point",
+          "x": "8",
+          "F": "6",
+          "unit": "kN"
+        }
       ],
-      "ask": { "reactions": true, "diagrams": true }
+      "ask": {
+        "reactions": true,
+        "diagrams": true
+      }
     },
     {
       "id": "pool-W9",
       "origin": "pool",
       "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
       "difficulty": 2,
-      "beam": { "length": "3", "supports": [{ "type": "fixed", "x": "0", "label": "A" }] },
+      "beam": {
+        "length": "3",
+        "supports": [
+          {
+            "type": "fixed",
+            "x": "0",
+            "label": "A"
+          }
+        ]
+      },
       "loads": [
-        { "kind": "udl", "x1": "0", "x2": "3", "q": "4", "unit": "kN/m" },
-        { "kind": "point", "x": "3", "F": "5", "unit": "kN" }
+        {
+          "kind": "udl",
+          "x1": "0",
+          "x2": "3",
+          "q": "4",
+          "unit": "kN/m"
+        },
+        {
+          "kind": "point",
+          "x": "3",
+          "F": "5",
+          "unit": "kN"
+        }
       ],
-      "ask": { "reactions": true, "diagrams": true }
+      "ask": {
+        "reactions": true,
+        "diagrams": true
+      }
     },
     {
       "id": "pool-W12",
       "origin": "pool",
       "sourceNote": "OPE simulazioa (OPE Euskadi estiloan) / simulación OPE (estilo OPE Euskadi)",
       "difficulty": 2,
-      "beam": { "length": "6", "supports": [{ "type": "pin", "x": "0", "label": "A" }, { "type": "roller", "x": "4.5", "label": "B" }] },
+      "beam": {
+        "length": "6",
+        "supports": [
+          {
+            "type": "pin",
+            "x": "0",
+            "label": "A"
+          },
+          {
+            "type": "roller",
+            "x": "4.5",
+            "label": "B"
+          }
+        ]
+      },
       "loads": [
-        { "kind": "point", "x": "1.5", "F": "2000", "unit": "kg" },
-        { "kind": "point", "x": "6", "F": "1000", "unit": "kg" }
+        {
+          "kind": "point",
+          "x": "1.5",
+          "F": "2000",
+          "unit": "kg"
+        },
+        {
+          "kind": "point",
+          "x": "6",
+          "F": "1000",
+          "unit": "kg"
+        }
       ],
-      "ask": { "reactions": true, "diagrams": true }
+      "ask": {
+        "reactions": true,
+        "diagrams": true
+      }
+    },
+    {
+      "id": "pool-S1",
+      "origin": "pool",
+      "sourceNote": "Ardatza errodamenduetan, polea hegalean (testuliburua) / eje sobre rodamientos, polea en voladizo (libro de texto)",
+      "difficulty": 2,
+      "beam": {
+        "length": "0.6",
+        "supports": [
+          {
+            "type": "pin",
+            "x": "0",
+            "label": "A"
+          },
+          {
+            "type": "roller",
+            "x": "0.4",
+            "label": "B"
+          }
+        ]
+      },
+      "loads": [
+        {
+          "kind": "point",
+          "x": "0.15",
+          "F": "1200",
+          "unit": "N"
+        },
+        {
+          "kind": "point",
+          "x": "0.6",
+          "F": "800",
+          "unit": "N"
+        }
+      ],
+      "ask": {
+        "reactions": true,
+        "diagrams": true
+      }
     }
   ]
 }

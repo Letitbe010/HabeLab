@@ -22,6 +22,10 @@ interface Props {
   dims?: 'both' | 'chained' | 'cumulative' | 'none';
   reactions?: Reaction[];
   units?: DisplayUnits;
+  /** free-body diagram with the UNKNOWN reactions of each support (Rx, Ry, M) in their positive sense, no values */
+  symbolic?: boolean;
+  /** fixed drawing width (small figures in a grid); default: follows the viewport */
+  width?: number;
 }
 
 function Arrow({ x, y1, y2, color, w = 2 }: { x: number; y1: number; y2: number; color: string; w?: number }) {
@@ -35,13 +39,14 @@ function Arrow({ x, y1, y2, color, w = 2 }: { x: number; y1: number; y2: number;
   );
 }
 
-export function BeamFigure({ ex, dims = 'both', reactions, units }: Props) {
+export function BeamFigure({ ex, dims = 'both', reactions, units, symbolic, width }: Props) {
   const { t } = useT();
-  const FIG_W = useFigWidth();
+  const autoW = useFigWidth();
+  const FIG_W = width ?? autoW;
   const L = P(ex.beam.length);
   const span = FIG_W - PAD_L - PAD_R;
   const sx = (x: number) => PAD_L + (span * x) / L;
-  const fbd = !!reactions;
+  const fbd = !!reactions || !!symbolic;
 
   // dimension ticks: every relevant position
   const ticks = new Set<number>([0, L]);
@@ -165,7 +170,7 @@ export function BeamFigure({ ex, dims = 'both', reactions, units }: Props) {
               {Array.from({ length: 5 }, (_, k) => (
                 <line key={k} x1={X - 16 + k * 8} y1={groundY} x2={X - 22 + k * 8} y2={groundY + 7} stroke="var(--ink)" strokeWidth={1} />
               ))}
-              <text x={X} y={groundY + 21} textAnchor="middle" className="lab">
+              <text x={symbolic ? X - 20 : X} y={groundY + 21} textAnchor="middle" className="lab">
                 {s.label}
               </text>
             </g>
@@ -244,6 +249,50 @@ export function BeamFigure({ ex, dims = 'both', reactions, units }: Props) {
             </g>
           );
         })}
+
+        {/* unknown reactions (symbolic free-body diagram): positive senses of the app */}
+        {symbolic &&
+          ex.beam.supports.map((s) => {
+            const X = sx(P(s.x));
+            const right = X > FIG_W / 2;
+            const sub = (main: string, idx: string) => (
+              <>
+                {main}
+                <tspan baselineShift="sub" fontSize="11">
+                  {idx}
+                </tspan>
+              </>
+            );
+            return (
+              <g key={`u${s.label}`} className="fr">
+                <Arrow x={X} y1={BEAM_Y + 72} y2={BEAM_Y + 8} color="var(--react)" w={2.6} />
+                <text x={X + (right ? -8 : 8)} y={BEAM_Y + 66} textAnchor={right ? 'end' : 'start'} className="fr">
+                  {sub('R', `${s.label}y`)}
+                </text>
+                {(s.type === 'pin' || s.type === 'fixed') && (
+                  <g stroke="var(--react)" fill="var(--react)">
+                    {/* Rx drawn from the support towards +x, label past the tip */}
+                    {/* (a support on the right half gets the arrow on its left, still pointing to +x) */}
+                    <line x1={right ? X - 56 : X + 4} y1={BEAM_Y + 30} x2={right ? X - 16 : X + 44} y2={BEAM_Y + 30} strokeWidth={2.4} />
+                    <path d={right ? `M${X - 8} ${BEAM_Y + 30} L${X - 18} ${BEAM_Y + 25} L${X - 18} ${BEAM_Y + 35} Z` : `M${X + 52} ${BEAM_Y + 30} L${X + 42} ${BEAM_Y + 25} L${X + 42} ${BEAM_Y + 35} Z`} stroke="none" />
+                    <text x={right ? X - 60 : X + 56} y={BEAM_Y + 35} textAnchor={right ? 'end' : 'start'} stroke="none" className="fr">
+                      {sub('R', `${s.label}x`)}
+                    </text>
+                  </g>
+                )}
+                {s.type === 'fixed' && (
+                  <g stroke="var(--react)" fill="none">
+                    <path d={`M${X + 30} ${BEAM_Y - 26} A 30 30 0 0 1 ${X + 30} ${BEAM_Y + 26}`} strokeWidth={2.4} transform={right ? `translate(${-60},0)` : undefined} />
+                    {/* arrowhead at the lower end: clockwise sense */}
+                    <path d={`M${X + 22 - (right ? 60 : 0)} ${BEAM_Y + 30} L${X + 35 - (right ? 60 : 0)} ${BEAM_Y + 31} L${X + 31 - (right ? 60 : 0)} ${BEAM_Y + 20} Z`} fill="var(--react)" stroke="none" />
+                    <text x={X + (right ? -40 : 40)} y={BEAM_Y - 30} textAnchor={right ? 'end' : 'start'} stroke="none" fill="var(--react)" className="fr">
+                      {sub('M', s.label)} ↻
+                    </text>
+                  </g>
+                )}
+              </g>
+            );
+          })}
 
         {/* dimension lines */}
         {showChained && (

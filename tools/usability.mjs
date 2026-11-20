@@ -55,6 +55,8 @@ const SCREENS = [
   ['worked-list', '#/ebatziak'],
   ['worked-W05', '#/ebatziak/W05'],
   ['theory-list', '#/teoria'],
+  ['theory-euskarriak', '#/teoria/euskarriak'],
+  ['theory-ardatzak', '#/teoria/ardatzak'],
   ['theory-erlazioak', '#/teoria/erlazioak'],
   ['theory-formulak', '#/teoria/formulak'],
   ['progress', '#/aurrerapena'],

@@ -526,6 +526,49 @@
    }
   },
   {
+   "id": "pool-S1",
+   "origin": "pool",
+   "sourceNote": "Ardatza errodamenduetan, polea hegalean (testuliburua) / eje sobre rodamientos, polea en voladizo (libro de texto)",
+   "difficulty": 2,
+   "beam": {
+    "length": "0.6",
+    "supports": [
+     {
+      "type": "pin",
+      "x": "0",
+      "label": "A"
+     },
+     {
+      "type": "roller",
+      "x": "0.4",
+      "label": "B"
+     }
+    ]
+   },
+   "loads": [
+    {
+     "kind": "point",
+     "x": "0.15",
+     "F": "1200",
+     "unit": "N"
+    },
+    {
+     "kind": "point",
+     "x": "0.6",
+     "F": "800",
+     "unit": "N"
+    }
+   ],
+   "ask": {
+    "reactions": true,
+    "diagrams": true
+   },
+   "text": {
+    "eu": "0,6 m-ko habea. x koordenatua habearen ezkerreko muturretik neurtzen da. Euskarriak: A: euskarri finkoa (x = 0 m); B: euskarri mugikorra (x = 0,4 m). Kargak: karga puntuala: 1 200 N, beherantz, x = 0,15 m-an; karga puntuala: 800 N, beherantz, x = 0,6 m-an. Kalkulatu erreakzioak eta marraztu ebakidura-indarren eta makurdura-momentuen diagramak, puntu kritikoetako balioak eta unitateak (SI) adieraziz.",
+    "es": "Viga de 0,6 m. La coordenada x se mide desde el extremo izquierdo de la viga. Apoyos: A: apoyo fijo (x = 0 m); B: apoyo móvil (x = 0,4 m). Cargas: carga puntual de 1 200 N, hacia abajo, en x = 0,15 m; carga puntual de 800 N, hacia abajo, en x = 0,6 m. Calcula las reacciones y dibuja los diagramas de esfuerzos cortantes y de momentos flectores, indicando los valores en los puntos críticos y sus unidades (SI)."
+   }
+  },
+  {
    "id": "pool-L1-101",
    "origin": "pool",
    "sourceNote": "HabeLab sorgailua, OPE estiloan / generador HabeLab, estilo OPE",

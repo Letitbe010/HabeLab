@@ -267,3 +267,26 @@ svg .dval { font-size: 13px; fill: var(--ink); font-weight: 600; paint-order: st
 .slider input { min-height: 32px; accent-color: var(--ink); }
 .topic-nav { justify-content: space-between; }
 .theory .block { overflow-x: auto; }
+
+/* theory: supports with their reactions, shafts */
+.sup-grid { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 10px 0; }
+.sup-grid figure { margin: 0; }
+.sup-grid figcaption { font-size: 14px; color: var(--muted); text-align: center; margin-top: 4px; }
+.shaft-arrow { text-align: center; color: var(--muted); font-weight: 600; margin: 6px 0; }
+
+/* worked exercises and notes (from KateLab, with theme tokens) */
+.steps { display: grid; gap: 10px; margin-top: 14px; }
+.wstep { border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; background: var(--surface); }
+.wstep.current { border-color: var(--M); box-shadow: 0 0 0 1px var(--M) inset; }
+.wstep header { display: flex; gap: 8px; align-items: baseline; flex-wrap: wrap; margin-bottom: 6px; }
+.layer { margin-top: 8px; }
+.layer .lab { display: block; font-size: 12px; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); font-weight: 700; margin-bottom: 2px; }
+.layer p { margin: 2px 0; }
+.layer.careful { background: var(--warnbg); border-left: 3px solid var(--warn); padding: 6px 10px; border-radius: 0 8px 8px 0; }
+.layer.careful .lab { color: var(--warn); }
+.layer.ope .lab { color: #6b3fc0; }
+.wstep table { border-collapse: collapse; font-size: 14.5px; margin: 4px 0; }
+.wstep td, .wstep th { border: 1px solid var(--line); padding: 4px 9px; text-align: left; }
+.wstep th { background: var(--soft); font-weight: 600; }
+a.button { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 14px; border-radius: 10px; text-decoration: none; border: 1px solid var(--line); color: var(--ink); background: var(--surface); }
+a.button.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }

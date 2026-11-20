@@ -18,6 +18,8 @@ function prose(b: Block): string[] {
     case 'p':
     case 'note':
     case 'example':
+    case 'fbd':
+    case 'shaft':
       return [b.eu, b.es];
     case 'list':
       return [...b.eu, ...b.es];
@@ -29,9 +31,9 @@ function prose(b: Block): string[] {
 }
 
 describe('theory content (spec §12)', () => {
-  it('has the 12 topics of §12.1, with unique ids and a review status', () => {
-    expect(TOPICS).toHaveLength(12);
-    expect(new Set(TOPICS.map((t) => t.id)).size).toBe(12);
+  it('has the 12 topics of §12.1 (+ shafts on bearings, asked by the user), unique ids, a review status', () => {
+    expect(TOPICS).toHaveLength(13);
+    expect(new Set(TOPICS.map((t) => t.id)).size).toBe(13);
     for (const t of TOPICS) {
       expect(['draft', 'reviewed']).toContain(t.status);
       expect(t.title.eu && t.title.es).toBeTruthy();
@@ -60,7 +62,7 @@ describe('theory content (spec §12)', () => {
 
   it.each(TOPICS.map((t) => [t.id, t] as const))('%s: examples resolve from a verified pool exercise; practice links exist', (_id, t) => {
     for (const b of t.blocks) {
-      if (b.t === 'example') {
+      if (b.t === 'example' || b.t === 'fbd' || b.t === 'shaft') {
         const ex = exercises.find((e) => e.id === b.pool);
         expect(ex, b.pool).toBeDefined();
         const vars = workedVars(ex!, '9.81', { force: 'kN', moment: 'kN·m', fk: 1000 });

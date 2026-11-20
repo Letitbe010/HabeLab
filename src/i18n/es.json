@@ -253,5 +253,13 @@
   "diag.short.moment-reversed": "sentido del momento invertido",
   "diag.short.jumps-swapped": "V⁻ y V⁺ confundidos",
   "diag.short.p-neighbour": "calculado en un punto cercano a p",
-  "ex.title": "Ejercicio · nivel {level} · {ask}"
+  "ex.title": "Ejercicio · nivel {level} · {ask}",
+  "th.sup.roller": "Apoyo móvil: Ry",
+  "th.sup.pin": "Apoyo fijo (articulación): Rx, Ry",
+  "th.sup.fixed": "Empotramiento: Rx, Ry, M",
+  "th.fbd": "Diagrama de sólido libre y equilibrio",
+  "th.shaft.mech": "Eje sobre rodamientos (figura mecánica)",
+  "th.shaft.model": "Modelo de viga",
+  "th.shaft.gear": "engranaje",
+  "th.shaft.pulley": "polea"
 }

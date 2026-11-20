@@ -22,6 +22,13 @@ export type Block =
   | ({ t: 'note'; kind: 'careful' | 'ope' } & Bi)
   | { t: 'table'; head: Bi[]; rows: Bi[][] }
   | { t: 'widget'; w: WidgetId }
+  /** the three supports, each drawn with its unknown reactions (Rx, Ry, M) */
+  | { t: 'supports' }
+  /** free-body diagram of a pool exercise with the unknown reactions, the equilibrium
+   *  equations written symbolically (LaTeX) and a text with the solver's values */
+  | ({ t: 'fbd'; pool: string; tex: string[] } & Bi)
+  /** a shaft on bearings drawn mechanically, and its beam model */
+  | ({ t: 'shaft'; pool: string } & Bi)
   | { t: 'practice'; worked?: string; level?: 1 | 2 | 3 };
 
 export interface Topic {

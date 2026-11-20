@@ -14,6 +14,23 @@ import { hrefOf } from '../router';
 import { useSettings } from '../settings';
 import { WORKED } from '../WorkedView';
 import { TheoryWidget } from './widgets';
+import { BeamFigure } from '../BeamFigure';
+import { ShaftFigure } from './ShaftFigure';
+
+/** one support alone on a short beam, to draw it with its unknown reactions */
+const SUPPORT_DEMOS: { type: 'roller' | 'pin' | 'fixed'; key: string }[] = [
+  { type: 'roller', key: 'th.sup.roller' },
+  { type: 'pin', key: 'th.sup.pin' },
+  { type: 'fixed', key: 'th.sup.fixed' },
+];
+const demo = (type: 'roller' | 'pin' | 'fixed'): Exercise => ({
+  id: `demo-${type}`,
+  origin: 'generated',
+  difficulty: 1,
+  beam: { length: '2', supports: [{ type, x: type === 'fixed' ? '0' : '1', label: 'A' }] },
+  loads: [],
+  ask: { reactions: true, diagrams: false },
+});
 
 const EXERCISES = (pool as { exercises: Exercise[] }).exercises;
 
@@ -82,6 +99,46 @@ function BlockView({ b }: { b: Block }) {
     }
     case 'widget':
       return <TheoryWidget w={b.w} />;
+    case 'supports':
+      return (
+        <div className="sup-grid">
+          {SUPPORT_DEMOS.map((d) => (
+            <figure key={d.type}>
+              <BeamFigure ex={demo(d.type)} dims="none" symbolic width={260} />
+              <figcaption>{t(d.key)}</figcaption>
+            </figure>
+          ))}
+        </div>
+      );
+    case 'fbd': {
+      const ex = EXERCISES.find((e) => e.id === b.pool);
+      if (!ex) return null;
+      const vars = workedVars(ex, settings.g, displayUnits(ex));
+      return (
+        <div className="example">
+          <span className="lab">{t('th.fbd')}</span>
+          <BeamFigure ex={ex} dims="chained" symbolic />
+          {b.tex.map((x, i) => (
+            <Tex key={i} tex={x} />
+          ))}
+          <p>{fillTemplate(b[lang], vars)}</p>
+          <a href={hrefOf({ name: 'pool', id: ex.id })}>{t('th.openExercise')}</a>
+        </div>
+      );
+    }
+    case 'shaft': {
+      const ex = EXERCISES.find((e) => e.id === b.pool);
+      if (!ex) return null;
+      const vars = workedVars(ex, settings.g, displayUnits(ex));
+      return (
+        <div className="example">
+          <span className="lab">{t('th.example')}</span>
+          <ShaftFigure ex={ex} />
+          <p>{fillTemplate(b[lang], vars)}</p>
+          <a href={hrefOf({ name: 'pool', id: ex.id })}>{t('th.openExercise')}</a>
+        </div>
+      );
+    }
     case 'practice': {
       const w = b.worked ? WORKED.find((x) => x.id === b.worked) : undefined;
       return (

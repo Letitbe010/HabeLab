@@ -253,5 +253,13 @@
   "diag.short.moment-reversed": "momentuaren noranzkoa alderantziz",
   "diag.short.jumps-swapped": "V⁻ eta V⁺ nahastuta",
   "diag.short.p-neighbour": "p-ren ondoko puntuan kalkulatuta",
-  "ex.title": "Ariketa · {level}. maila · {ask}"
+  "ex.title": "Ariketa · {level}. maila · {ask}",
+  "th.sup.roller": "Euskarri mugikorra: Ry",
+  "th.sup.pin": "Euskarri finkoa (artikulazioa): Rx, Ry",
+  "th.sup.fixed": "Landaketa: Rx, Ry, M",
+  "th.fbd": "Gorputz askearen diagrama eta oreka",
+  "th.shaft.mech": "Ardatza errodamenduetan (irudi mekanikoa)",
+  "th.shaft.model": "Habe-eredua",
+  "th.shaft.gear": "engranajea",
+  "th.shaft.pulley": "polea"
 }
