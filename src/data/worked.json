@@ -1,0 +1,273 @@
+{
+  "_comment": "Worked exercises (spec §13). Each one is based on a verified pool exercise. Every number in the texts comes from the solver through {{variables}} (see src/core/workedVars.ts); tests/worked.test.ts rejects hard-coded digits. Status 'draft' until the user reviews the wording (spec §13.3).",
+  "items": [
+    {
+      "id": "W01",
+      "pool": "pool-W1",
+      "status": "draft",
+      "support": "simple",
+      "load": "point",
+      "title": { "eu": "Bi euskarri, karga puntual bat", "es": "Dos apoyos, una carga puntual" },
+      "intro": {
+        "eu": "Habe sinplea, karga puntual bakarrarekin: diagramen oinarrizko eredua. Hemen ikasitakoa ariketa guztietan erabiltzen da.",
+        "es": "Viga simple con una sola carga puntual: el modelo básico de los diagramas. Lo que se aprende aquí se usa en todos los ejercicios."
+      },
+      "careful": {
+        "reactions": {
+          "eu": "Erreakzio handiena kargatik hurbilen dagoen euskarrian dago: R_A = {{R_A}}, R_B = {{R_B}}.",
+          "es": "La reacción mayor está en el apoyo más cercano a la carga: R_A = {{R_A}}, R_B = {{R_B}}."
+        },
+        "mmax": {
+          "eu": "Karga puntual baten azpian M-k ertz bat du: M_max karga dagoen tokian dago ({{Mmax}}, x = {{xMmax}} m), Pab/L formularekin bat.",
+          "es": "Bajo una carga puntual M forma un pico: M_máx está donde está la carga ({{Mmax}}, x = {{xMmax}} m), de acuerdo con Pab/L."
+        }
+      }
+    },
+    {
+      "id": "W02",
+      "pool": "pool-G1",
+      "status": "draft",
+      "support": "simple",
+      "load": "point",
+      "title": { "eu": "Bi euskarri, bi karga kg-tan (OPE Euskadi 2022)", "es": "Dos apoyos, dos cargas en kg (OPE Euskadi 2022)" },
+      "intro": {
+        "eu": "OPE Euskadi 2022ko ariketa: V eta M p puntuan eskatzen dira, SIko unitateetan.",
+        "es": "Ejercicio de la OPE Euskadi 2022: se piden V y M en el punto p, en unidades del SI."
+      },
+      "careful": {
+        "units": {
+          "eu": "kg indar gisa = kgf: N-tara pasatzeko, biderkatu g-rekin (g = {{g}} m/s²). Hori ahaztea da akatsik ohikoena.",
+          "es": "kg como fuerza = kgf: para pasar a N, multiplica por g (g = {{g}} m/s²). Olvidarlo es el error más habitual."
+        },
+        "table": {
+          "eu": "Irudiko neurriak jatorritik metatuak dira: p x = {{xp}} m-an dago. V_p = {{Vp}}, M_p = {{Mp}}.",
+          "es": "Las cotas de la figura son acumuladas desde el origen: p está en x = {{xp}} m. V_p = {{Vp}}, M_p = {{Mp}}."
+        }
+      }
+    },
+    {
+      "id": "W03",
+      "pool": "pool-G2",
+      "status": "draft",
+      "support": "simple",
+      "load": "udl",
+      "title": { "eu": "Bi euskarri, karga uniforme osoa", "es": "Dos apoyos, carga uniforme completa" },
+      "intro": {
+        "eu": "Karga uniforme batek V lineala eta M parabolikoa sortzen ditu.",
+        "es": "Una carga uniforme produce un V lineal y un M parabólico."
+      },
+      "careful": {
+        "fbd": {
+          "eu": "Erreakzioetarako, karga uniformea bere erresultantea bezala har daiteke: {{W1}}, tartearen erdian (x = {{xW1}} m). Sekzio baten barruan, ordea, sekzioaren ezkerreko zatiarena bakarrik.",
+          "es": "Para las reacciones, la carga uniforme puede tomarse como su resultante: {{W1}}, en el centro del tramo (x = {{xW1}} m). Dentro de una sección, en cambio, solo la de la parte izquierda."
+        },
+        "mmax": {
+          "eu": "V = 0 den tokian dago M_max: x = {{xMmax}} m, M_max = {{Mmax}} (qL²/8).",
+          "es": "M_máx está donde V = 0: x = {{xMmax}} m, M_máx = {{Mmax}} (qL²/8)."
+        }
+      }
+    },
+    {
+      "id": "W04",
+      "pool": "pool-W4",
+      "status": "draft",
+      "support": "simple",
+      "load": "udl",
+      "title": { "eu": "Bi euskarri, karga uniforme partziala", "es": "Dos apoyos, carga uniforme parcial" },
+      "intro": {
+        "eu": "Karga habearen zati batean bakarrik dago: tarte bakoitzean forma desberdina.",
+        "es": "La carga está solo en parte de la viga: forma distinta en cada tramo."
+      },
+      "careful": {
+        "segments": {
+          "eu": "Karga amaitzen den puntuan V-k ez du jauzirik, baina malda aldatzen da: M parabolikoa izatetik lineala izatera pasatzen da.",
+          "es": "Donde termina la carga V no salta, pero cambia la pendiente: M pasa de parabólico a lineal."
+        },
+        "mmax": {
+          "eu": "V = 0 ez dago habearen erdian: x = {{xMmax}} m, M_max = {{Mmax}}.",
+          "es": "V = 0 no está en el centro de la viga: x = {{xMmax}} m, M_máx = {{Mmax}}."
+        }
+      }
+    },
+    {
+      "id": "W05",
+      "pool": "pool-W5",
+      "status": "draft",
+      "support": "simple",
+      "load": "mixed",
+      "title": { "eu": "Bi euskarri, karga puntuala eta uniformea", "es": "Dos apoyos, carga puntual y uniforme" },
+      "intro": {
+        "eu": "Karga mistoak: superposizioa ez da beharrezkoa, tarteka ebaztea nahikoa da.",
+        "es": "Cargas mixtas: no hace falta superposición, basta con resolver por tramos."
+      },
+      "careful": {
+        "reactions": {
+          "eu": "Momentuak A-rekiko: karga uniformearen erresultantea ({{W2}}) bere tartearen erdian dago, x = {{xW2}} m-an.",
+          "es": "Momentos respecto de A: la resultante de la carga uniforme ({{W2}}) está en el centro de su tramo, en x = {{xW2}} m."
+        },
+        "mmax": {
+          "eu": "Begiratu V-ren zeinu-aldaketa non gertatzen den: M_max = {{Mmax}}, x = {{xMmax}} m.",
+          "es": "Mira dónde cambia de signo V: M_máx = {{Mmax}}, x = {{xMmax}} m."
+        }
+      }
+    },
+    {
+      "id": "W06",
+      "pool": "pool-G4",
+      "status": "draft",
+      "support": "overhang",
+      "load": "point",
+      "title": { "eu": "Hegala, muturreko karga puntuala", "es": "Voladizo, carga puntual en el extremo" },
+      "intro": {
+        "eu": "Euskarri bat ez dago muturrean: hegalak erreakzio negatibo bat eta M negatiboa sortzen ditu.",
+        "es": "Un apoyo no está en el extremo: el voladizo produce una reacción negativa y M negativo."
+      },
+      "careful": {
+        "reactions": {
+          "eu": "R_A negatiboa da ({{R_A}}): beherantz doa. Hegaletan ohikoa da; ez da akatsa.",
+          "es": "R_A es negativa ({{R_A}}): va hacia abajo. Es habitual en voladizos; no es un error."
+        },
+        "mmax": {
+          "eu": "M negatiboa da barneko euskarrian (goiko zuntza trakzioan): |M|max = {{Mmax}}, x = {{xMmax}} m.",
+          "es": "M es negativo en el apoyo interior (fibra superior traccionada): |M|máx = {{Mmax}}, x = {{xMmax}} m."
+        }
+      }
+    },
+    {
+      "id": "W07",
+      "pool": "pool-W7",
+      "status": "draft",
+      "support": "overhang",
+      "load": "mixed",
+      "title": { "eu": "Bi hegal, karga mistoak", "es": "Dos voladizos, cargas mixtas" },
+      "intro": {
+        "eu": "Euskarriak barnean daude eta bi hegal daude: M-k zeinua aldatzen du.",
+        "es": "Los apoyos están en el interior y hay dos voladizos: M cambia de signo."
+      },
+      "careful": {
+        "fbd": {
+          "eu": "Karga uniformea habe osoan dago, hegalak barne: erresultantea {{W2}}, x = {{xW2}} m-an.",
+          "es": "La carga uniforme está en toda la viga, voladizos incluidos: resultante {{W2}}, en x = {{xW2}} m."
+        },
+        "mmax": {
+          "eu": "Bi hegaletan M negatiboa da; |M|max = {{Mmax}}, x = {{xMmax}} m. Simetriak egiaztapen azkarra ematen du: R_A = R_B.",
+          "es": "En los dos voladizos M es negativo; |M|máx = {{Mmax}}, x = {{xMmax}} m. La simetría da una comprobación rápida: R_A = R_B."
+        }
+      }
+    },
+    {
+      "id": "W08",
+      "pool": "pool-G3",
+      "status": "draft",
+      "support": "cantilever",
+      "load": "point",
+      "title": { "eu": "Konsola, karga puntuala", "es": "Viga empotrada (voladizo), carga puntual" },
+      "intro": {
+        "eu": "Habe landatua: euskarri bakarrak (landaketak) indarra eta momentua ematen ditu.",
+        "es": "Viga empotrada: un único apoyo (el empotramiento) da fuerza y momento."
+      },
+      "careful": {
+        "reactions": {
+          "eu": "R_A = {{R_A}} eta M_A = {{M_A}} (erloju-orratzen noranzkoa +; negatiboa → aurkako noranzkoan).",
+          "es": "R_A = {{R_A}} y M_A = {{M_A}} (sentido horario +; negativo → antihorario)."
+        },
+        "segments": {
+          "eu": "Mutur askean V = 0 eta M = 0 izan behar dira: egiaztapen azkarra.",
+          "es": "En el extremo libre deben ser V = 0 y M = 0: comprobación rápida."
+        }
+      }
+    },
+    {
+      "id": "W09",
+      "pool": "pool-W9",
+      "status": "draft",
+      "support": "cantilever",
+      "load": "mixed",
+      "title": { "eu": "Konsola, karga uniformea eta puntuala", "es": "Viga empotrada, carga uniforme y puntual" },
+      "intro": {
+        "eu": "Konsola batean, landaketan dago beti |M|max (karga guztiak beherantz badaude).",
+        "es": "En una viga empotrada, |M|máx está siempre en el empotramiento (si todas las cargas van hacia abajo)."
+      },
+      "careful": {
+        "reactions": {
+          "eu": "R_A = karga guztien batura = {{R_A}}; M_A = {{M_A}}.",
+          "es": "R_A = suma de todas las cargas = {{R_A}}; M_A = {{M_A}}."
+        },
+        "mmax": {
+          "eu": "|M|max landaketan dago: {{Mmax}}, x = {{xMmax}} m.",
+          "es": "|M|máx está en el empotramiento: {{Mmax}}, x = {{xMmax}} m."
+        }
+      }
+    },
+    {
+      "id": "W10",
+      "pool": "pool-G5",
+      "status": "draft",
+      "support": "simple",
+      "load": "linear",
+      "title": { "eu": "Bi euskarri, karga triangeluarra", "es": "Dos apoyos, carga triangular" },
+      "intro": {
+        "eu": "Karga linealki aldakorra: V parabolikoa eta M kubikoa.",
+        "es": "Carga linealmente variable: V parabólico y M cúbico."
+      },
+      "careful": {
+        "fbd": {
+          "eu": "Karga triangeluarraren erresultantea {{W1}} da, eta x = {{xW1}} m-an dago (alde handitik L/3-ra), ez erdian.",
+          "es": "La resultante de la carga triangular es {{W1}} y está en x = {{xW1}} m (a L/3 del lado mayor), no en el centro."
+        },
+        "mmax": {
+          "eu": "V(x) bigarren mailakoa da: V = 0 ekuazio koadratiko batekin ebazten da, x = {{xMmax}} m; M_max = {{Mmax}}.",
+          "es": "V(x) es de segundo grado: V = 0 se resuelve con una ecuación cuadrática, x = {{xMmax}} m; M_máx = {{Mmax}}."
+        }
+      }
+    },
+    {
+      "id": "W11",
+      "pool": "pool-G6",
+      "status": "draft",
+      "support": "simple",
+      "load": "moment",
+      "title": { "eu": "Bi euskarri, momentu puntuala", "es": "Dos apoyos, momento puntual" },
+      "intro": {
+        "eu": "Momentu puntual batek ez du V aldatzen, baina M-n jauzi bat sortzen du.",
+        "es": "Un momento puntual no cambia V, pero produce un salto en M."
+      },
+      "careful": {
+        "reactions": {
+          "eu": "Momentu puntualak ez du indar bertikalik, baina erreakzioak sortzen ditu: R_A = {{R_A}}, R_B = {{R_B}}.",
+          "es": "El momento puntual no tiene fuerza vertical, pero genera reacciones: R_A = {{R_A}}, R_B = {{R_B}}."
+        },
+        "segments": {
+          "eu": "Momentu puntualean M-k jauzi egiten du (+M₀ erloju-orratzen noranzkoan); V ez da aldatzen.",
+          "es": "En el momento puntual M salta (+M₀ en sentido horario); V no cambia."
+        }
+      }
+    },
+    {
+      "id": "W12",
+      "pool": "pool-W12",
+      "status": "draft",
+      "support": "overhang",
+      "load": "point",
+      "title": { "eu": "OPE simulazioa: hegala eta kargak kg-tan", "es": "Simulación OPE: voladizo y cargas en kg" },
+      "intro": {
+        "eu": "Azterketa-ariketa osoa, puntuazio-irizpideekin: erreakzioak, V diagrama eta M diagrama, balio eta unitateekin.",
+        "es": "Ejercicio completo de examen, con criterios de puntuación: reacciones, diagrama de V y diagrama de M, con valores y unidades."
+      },
+      "careful": {
+        "units": {
+          "eu": "Lehenik, bihurtu kargak N-tara (g = {{g}} m/s²) eta lan egin N-tan hasieratik bukaeraraino.",
+          "es": "Primero, pasa las cargas a N (g = {{g}} m/s²) y trabaja en N de principio a fin."
+        },
+        "mmax": {
+          "eu": "Hegalaren euskarrian M negatiboa da: |M|max = {{Mmax}}, x = {{xMmax}} m. Idatzi beti balioak unitateekin.",
+          "es": "En el apoyo del voladizo M es negativo: |M|máx = {{Mmax}}, x = {{xMmax}} m. Escribe siempre los valores con unidades."
+        }
+      },
+      "ope": {
+        "eu": "Puntuazio-irizpidea (Euskadi 2020ko banaketaren antzera): erreakzioak {{pR}}, V diagrama {{pV}}, M diagrama {{pM}}. Diagrametan balioak eta unitateak puntu kritiko guztietan idatzi behar dira, eta tarteen forma zuzena izan behar da.",
+        "es": "Criterio de puntuación (como el reparto de Euskadi 2020): reacciones {{pR}}, diagrama de V {{pV}}, diagrama de M {{pM}}. En los diagramas hay que escribir valores y unidades en todos los puntos críticos, y la forma de los tramos debe ser correcta."
+      }
+    }
+  ]
+}

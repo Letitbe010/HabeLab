@@ -23,7 +23,15 @@ interface Props {
   vFlip: boolean;
   mBelow: boolean;
   overlay?: OverlayPoint[];
+  /** worked examples: show only these sections (default: all) */
+  sections?: SectionKey[];
+  /** worked examples: only this segment's equations, and the diagrams drawn up to its end */
+  segIndex?: number;
+  /** hide the section headings (the worked view has its own) */
+  bare?: boolean;
 }
+
+export type SectionKey = 'units' | 'fbd' | 'equilibrium' | 'segments' | 'table' | 'diagrams' | 'mmax';
 
 const SUP = ['', '', '²', '³'];
 
@@ -40,7 +48,8 @@ export function polyText(p: Poly, k: number): string {
   return terms.length ? terms.join(' ').replace(/^\+ /, '') : '0';
 }
 
-export function SolutionSteps({ ex, sol, kps, units, g, vFlip, mBelow, overlay }: Props) {
+export function SolutionSteps({ ex, sol, kps, units, g, vFlip, mBelow, overlay, sections, segIndex, bare }: Props) {
+  const show = (k: SectionKey) => !sections || sections.includes(k);
   const { t } = useT();
   const beam = exerciseToBeam(ex, g);
   const k = units.fk;
@@ -86,20 +95,25 @@ export function SolutionSteps({ ex, sol, kps, units, g, vFlip, mBelow, overlay }
 
   return (
     <div className="solution">
-      <h2 className="sec">{t('sol.title')}</h2>
+      {!bare && <h2 className="sec">{t('sol.title')}</h2>}
 
+      {show('units') && (
       <div className="sol-ask">
-        <h4>{t('sol.units')}</h4>
+        {!bare && <h4>{t('sol.units')}</h4>}
         {conv.length ? conv.map((c) => <p key={c} className="formula">{c}</p>) : <p>{t('sol.noUnits')}</p>}
       </div>
+      )}
 
+      {show('fbd') && (
       <div className="sol-ask">
-        <h4>{t('sol.fbd')}</h4>
+        {!bare && <h4>{t('sol.fbd')}</h4>}
         <BeamFigure ex={ex} dims="none" reactions={sol.reactions} units={units} />
       </div>
+      )}
 
+      {show('equilibrium') && (
       <div className="sol-ask">
-        <h4>{t('sol.equilibrium')}</h4>
+        {!bare && <h4>{t('sol.equilibrium')}</h4>}
         <div className="block">
           {sup.length === 2 ? (
             <>
@@ -125,20 +139,24 @@ export function SolutionSteps({ ex, sol, kps, units, g, vFlip, mBelow, overlay }
           )}
         </div>
       </div>
+      )}
 
+      {show('segments') && (
       <div className="sol-ask">
-        <h4>{t('sol.segments')}</h4>
+        {!bare && <h4>{t('sol.segments')}</h4>}
         <div className="block">
-          {sol.segments.map((s) => (
+          {sol.segments.filter((_, i) => segIndex === undefined || i === segIndex).map((s) => (
             <p key={R.toString(s.x1)} className="formula eq">
               {t('sol.segment', { a: num(R.toNumber(s.x1)), b: num(R.toNumber(s.x2)) })}: &nbsp; V(x) = {polyText(vFlip ? s.V.map(R.neg) : s.V, k)} {units.force}; &nbsp; M(x) = {polyText(s.M, k)} {units.moment}
             </p>
           ))}
         </div>
       </div>
+      )}
 
+      {show('table') && (
       <div className="sol-ask">
-        <h4>{t('sol.table')}</h4>
+        {!bare && <h4>{t('sol.table')}</h4>}
         <div className="block">
           <table>
             <thead>
@@ -169,10 +187,20 @@ export function SolutionSteps({ ex, sol, kps, units, g, vFlip, mBelow, overlay }
           </table>
         </div>
       </div>
+      )}
 
+      {show('diagrams') && (
       <div className="sol-ask">
-        <h4>{t('sol.diagrams')}</h4>
-        <DiagramView sol={sol} kps={kps} units={units} vFlip={vFlip} mBelow={mBelow} overlay={overlay} />
+        {!bare && <h4>{t('sol.diagrams')}</h4>}
+        <DiagramView
+          sol={sol}
+          kps={kps}
+          units={units}
+          vFlip={vFlip}
+          mBelow={mBelow}
+          overlay={overlay}
+          upto={segIndex === undefined ? undefined : R.toNumber(sol.segments[segIndex]!.x2)}
+        />
         <p className="legend">
           <span>
             <i style={{ background: 'var(--V)' }} />V
@@ -188,9 +216,11 @@ export function SolutionSteps({ ex, sol, kps, units, g, vFlip, mBelow, overlay }
           ) : null}
         </p>
       </div>
+      )}
 
+      {show('mmax') && (
       <div className="sol-ask">
-        <h4>{t('sol.mmax')}</h4>
+        {!bare && <h4>{t('sol.mmax')}</h4>}
         {zeros.length ? (
           zeros.map((z) => (
             <p key={z.x.value} className="formula eq">
@@ -204,6 +234,7 @@ export function SolutionSteps({ ex, sol, kps, units, g, vFlip, mBelow, overlay }
           <b>{t('sol.absMax', { m: fmtM(ext.absMmax.value, units), x: num(ext.xAbsMmax.value) })}</b>
         </p>
       </div>
+      )}
     </div>
   );
 }

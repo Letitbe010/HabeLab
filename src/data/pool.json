@@ -275,6 +275,257 @@
    }
   },
   {
+   "id": "pool-W1",
+   "origin": "pool",
+   "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
+   "difficulty": 1,
+   "beam": {
+    "length": "5",
+    "supports": [
+     {
+      "type": "pin",
+      "x": "0",
+      "label": "A"
+     },
+     {
+      "type": "roller",
+      "x": "5",
+      "label": "B"
+     }
+    ]
+   },
+   "loads": [
+    {
+     "kind": "point",
+     "x": "2",
+     "F": "10",
+     "unit": "kN"
+    }
+   ],
+   "ask": {
+    "reactions": true,
+    "diagrams": true
+   },
+   "text": {
+    "eu": "5 m-ko habea. x koordenatua habearen ezkerreko muturretik neurtzen da. Euskarriak: A: euskarri finkoa (x = 0 m); B: euskarri mugikorra (x = 5 m). Kargak: karga puntuala: 10 kN, beherantz, x = 2 m-an. Kalkulatu erreakzioak eta marraztu ebakidura-indarren eta makurdura-momentuen diagramak, puntu kritikoetako balioak eta unitateak (SI) adieraziz.",
+    "es": "Viga de 5 m. La coordenada x se mide desde el extremo izquierdo de la viga. Apoyos: A: apoyo fijo (x = 0 m); B: apoyo móvil (x = 5 m). Cargas: carga puntual de 10 kN, hacia abajo, en x = 2 m. Calcula las reacciones y dibuja los diagramas de esfuerzos cortantes y de momentos flectores, indicando los valores en los puntos críticos y sus unidades (SI)."
+   }
+  },
+  {
+   "id": "pool-W4",
+   "origin": "pool",
+   "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
+   "difficulty": 2,
+   "beam": {
+    "length": "6",
+    "supports": [
+     {
+      "type": "pin",
+      "x": "0",
+      "label": "A"
+     },
+     {
+      "type": "roller",
+      "x": "6",
+      "label": "B"
+     }
+    ]
+   },
+   "loads": [
+    {
+     "kind": "udl",
+     "x1": "0",
+     "x2": "3",
+     "q": "8",
+     "unit": "kN/m"
+    }
+   ],
+   "ask": {
+    "reactions": true,
+    "diagrams": true
+   },
+   "text": {
+    "eu": "6 m-ko habea. x koordenatua habearen ezkerreko muturretik neurtzen da. Euskarriak: A: euskarri finkoa (x = 0 m); B: euskarri mugikorra (x = 6 m). Kargak: karga uniformea: 8 kN/m, beherantz, x = 0 m-tik x = 3 m-ra. Kalkulatu erreakzioak eta marraztu ebakidura-indarren eta makurdura-momentuen diagramak, puntu kritikoetako balioak eta unitateak (SI) adieraziz.",
+    "es": "Viga de 6 m. La coordenada x se mide desde el extremo izquierdo de la viga. Apoyos: A: apoyo fijo (x = 0 m); B: apoyo móvil (x = 6 m). Cargas: carga uniforme de 8 kN/m, hacia abajo, entre x = 0 m y x = 3 m. Calcula las reacciones y dibuja los diagramas de esfuerzos cortantes y de momentos flectores, indicando los valores en los puntos críticos y sus unidades (SI)."
+   }
+  },
+  {
+   "id": "pool-W5",
+   "origin": "pool",
+   "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
+   "difficulty": 2,
+   "beam": {
+    "length": "8",
+    "supports": [
+     {
+      "type": "pin",
+      "x": "0",
+      "label": "A"
+     },
+     {
+      "type": "roller",
+      "x": "8",
+      "label": "B"
+     }
+    ]
+   },
+   "loads": [
+    {
+     "kind": "point",
+     "x": "2",
+     "F": "20",
+     "unit": "kN"
+    },
+    {
+     "kind": "udl",
+     "x1": "4",
+     "x2": "8",
+     "q": "5",
+     "unit": "kN/m"
+    }
+   ],
+   "ask": {
+    "reactions": true,
+    "diagrams": true
+   },
+   "text": {
+    "eu": "8 m-ko habea. x koordenatua habearen ezkerreko muturretik neurtzen da. Euskarriak: A: euskarri finkoa (x = 0 m); B: euskarri mugikorra (x = 8 m). Kargak: karga puntuala: 20 kN, beherantz, x = 2 m-an; karga uniformea: 5 kN/m, beherantz, x = 4 m-tik x = 8 m-ra. Kalkulatu erreakzioak eta marraztu ebakidura-indarren eta makurdura-momentuen diagramak, puntu kritikoetako balioak eta unitateak (SI) adieraziz.",
+    "es": "Viga de 8 m. La coordenada x se mide desde el extremo izquierdo de la viga. Apoyos: A: apoyo fijo (x = 0 m); B: apoyo móvil (x = 8 m). Cargas: carga puntual de 20 kN, hacia abajo, en x = 2 m; carga uniforme de 5 kN/m, hacia abajo, entre x = 4 m y x = 8 m. Calcula las reacciones y dibuja los diagramas de esfuerzos cortantes y de momentos flectores, indicando los valores en los puntos críticos y sus unidades (SI)."
+   }
+  },
+  {
+   "id": "pool-W7",
+   "origin": "pool",
+   "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
+   "difficulty": 3,
+   "beam": {
+    "length": "8",
+    "supports": [
+     {
+      "type": "pin",
+      "x": "1",
+      "label": "A"
+     },
+     {
+      "type": "roller",
+      "x": "7",
+      "label": "B"
+     }
+    ]
+   },
+   "loads": [
+    {
+     "kind": "point",
+     "x": "0",
+     "F": "6",
+     "unit": "kN"
+    },
+    {
+     "kind": "udl",
+     "x1": "0",
+     "x2": "8",
+     "q": "2",
+     "unit": "kN/m"
+    },
+    {
+     "kind": "point",
+     "x": "8",
+     "F": "6",
+     "unit": "kN"
+    }
+   ],
+   "ask": {
+    "reactions": true,
+    "diagrams": true
+   },
+   "text": {
+    "eu": "8 m-ko habea. x koordenatua habearen ezkerreko muturretik neurtzen da. Euskarriak: A: euskarri finkoa (x = 1 m); B: euskarri mugikorra (x = 7 m). Kargak: karga puntuala: 6 kN, beherantz, x = 0 m-an; karga uniformea: 2 kN/m, beherantz, x = 0 m-tik x = 8 m-ra; karga puntuala: 6 kN, beherantz, x = 8 m-an. Kalkulatu erreakzioak eta marraztu ebakidura-indarren eta makurdura-momentuen diagramak, puntu kritikoetako balioak eta unitateak (SI) adieraziz.",
+    "es": "Viga de 8 m. La coordenada x se mide desde el extremo izquierdo de la viga. Apoyos: A: apoyo fijo (x = 1 m); B: apoyo móvil (x = 7 m). Cargas: carga puntual de 6 kN, hacia abajo, en x = 0 m; carga uniforme de 2 kN/m, hacia abajo, entre x = 0 m y x = 8 m; carga puntual de 6 kN, hacia abajo, en x = 8 m. Calcula las reacciones y dibuja los diagramas de esfuerzos cortantes y de momentos flectores, indicando los valores en los puntos críticos y sus unidades (SI)."
+   }
+  },
+  {
+   "id": "pool-W9",
+   "origin": "pool",
+   "sourceNote": "Kasu klasikoa (testuliburua) / caso clásico (libro de texto)",
+   "difficulty": 2,
+   "beam": {
+    "length": "3",
+    "supports": [
+     {
+      "type": "fixed",
+      "x": "0",
+      "label": "A"
+     }
+    ]
+   },
+   "loads": [
+    {
+     "kind": "udl",
+     "x1": "0",
+     "x2": "3",
+     "q": "4",
+     "unit": "kN/m"
+    },
+    {
+     "kind": "point",
+     "x": "3",
+     "F": "5",
+     "unit": "kN"
+    }
+   ],
+   "ask": {
+    "reactions": true,
+    "diagrams": true
+   },
+   "text": {
+    "eu": "3 m-ko habea. x koordenatua habearen ezkerreko muturretik neurtzen da. Euskarriak: A: landaketa (x = 0 m). Kargak: karga uniformea: 4 kN/m, beherantz, x = 0 m-tik x = 3 m-ra; karga puntuala: 5 kN, beherantz, x = 3 m-an. Kalkulatu erreakzioak eta marraztu ebakidura-indarren eta makurdura-momentuen diagramak, puntu kritikoetako balioak eta unitateak (SI) adieraziz.",
+    "es": "Viga de 3 m. La coordenada x se mide desde el extremo izquierdo de la viga. Apoyos: A: empotramiento (x = 0 m). Cargas: carga uniforme de 4 kN/m, hacia abajo, entre x = 0 m y x = 3 m; carga puntual de 5 kN, hacia abajo, en x = 3 m. Calcula las reacciones y dibuja los diagramas de esfuerzos cortantes y de momentos flectores, indicando los valores en los puntos críticos y sus unidades (SI)."
+   }
+  },
+  {
+   "id": "pool-W12",
+   "origin": "pool",
+   "sourceNote": "OPE simulazioa (OPE Euskadi estiloan) / simulación OPE (estilo OPE Euskadi)",
+   "difficulty": 2,
+   "beam": {
+    "length": "6",
+    "supports": [
+     {
+      "type": "pin",
+      "x": "0",
+      "label": "A"
+     },
+     {
+      "type": "roller",
+      "x": "4.5",
+      "label": "B"
+     }
+    ]
+   },
+   "loads": [
+    {
+     "kind": "point",
+     "x": "1.5",
+     "F": "2000",
+     "unit": "kg"
+    },
+    {
+     "kind": "point",
+     "x": "6",
+     "F": "1000",
+     "unit": "kg"
+    }
+   ],
+   "ask": {
+    "reactions": true,
+    "diagrams": true
+   },
+   "text": {
+    "eu": "6 m-ko habea. x koordenatua habearen ezkerreko muturretik neurtzen da. Euskarriak: A: euskarri finkoa (x = 0 m); B: euskarri mugikorra (x = 4,5 m). Kargak: karga puntuala: 2 000 kg, beherantz, x = 1,5 m-an; karga puntuala: 1 000 kg, beherantz, x = 6 m-an. Hartu g = {{g}} m/s². Kalkulatu erreakzioak eta marraztu ebakidura-indarren eta makurdura-momentuen diagramak, puntu kritikoetako balioak eta unitateak (SI) adieraziz.",
+    "es": "Viga de 6 m. La coordenada x se mide desde el extremo izquierdo de la viga. Apoyos: A: apoyo fijo (x = 0 m); B: apoyo móvil (x = 4,5 m). Cargas: carga puntual de 2 000 kg, hacia abajo, en x = 1,5 m; carga puntual de 1 000 kg, hacia abajo, en x = 6 m. Toma g = {{g}} m/s². Calcula las reacciones y dibuja los diagramas de esfuerzos cortantes y de momentos flectores, indicando los valores en los puntos críticos y sus unidades (SI)."
+   }
+  },
+  {
    "id": "pool-L1-101",
    "origin": "pool",
    "sourceNote": "HabeLab sorgailua, OPE estiloan / generador HabeLab, estilo OPE",

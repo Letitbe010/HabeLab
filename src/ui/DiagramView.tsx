@@ -21,6 +21,7 @@ export interface OverlayPoint {
 }
 
 interface Props {
+  upto?: number;
   sol: AnalyticSolution;
   kps: KeyPoint[];
   units: DisplayUnits;
@@ -41,6 +42,7 @@ function Panel({
   sign,
   flip,
   overlay,
+  upto,
 }: {
   kind: 'V' | 'M';
   sol: AnalyticSolution;
@@ -51,6 +53,8 @@ function Panel({
   /** draw positive values below the axis (drawing only, labels unchanged) */
   flip: boolean;
   overlay?: OverlayPoint[];
+  /** draw only up to this x (worked examples build the diagram segment by segment); same scale */
+  upto?: number;
 }) {
   const { t } = useT();
   const FIG_W = useFigWidth();
@@ -87,7 +91,15 @@ function Panel({
   const range = Math.max(1e-9, hi - lo);
   const sy = (v: number) => PAD_TOP + ((hi - draw(v)) * (PANEL_H - PAD_TOP - PAD_BOT)) / range;
   const y0 = sy(0);
-  const d = pts.map((p, i) => `${i ? 'L' : 'M'}${sx(p[0]).toFixed(1)} ${sy(vals[i] as number).toFixed(1)}`).join(' ');
+  let drawPts = pts.map((p, i) => [p[0], vals[i] as number] as [number, number]);
+  if (upto !== undefined) {
+    drawPts = drawPts.filter((p) => p[0] <= upto + 1e-9);
+    // at the cut keep only the left limit, then close to the axis
+    const n = drawPts.length;
+    if (n >= 2 && Math.abs(drawPts[n - 1]![0] - upto) < 1e-9 && Math.abs(drawPts[n - 2]![0] - upto) < 1e-9) drawPts.pop();
+    drawPts.push([upto, 0]);
+  }
+  const d = drawPts.map((p, i) => `${i ? 'L' : 'M'}${sx(p[0]).toFixed(1)} ${sy(p[1]).toFixed(1)}`).join(' ');
 
   // labels. V: per segment (one label in the middle when constant, else one at each end).
   // M: per key point (both limits only where M jumps). Only values inside the beam.
@@ -112,6 +124,12 @@ function Panel({
       else if (!same(l, r)) labels.push({ x, v: l, anchor: 'end' }, { x, v: r, anchor: 'start' });
       else labels.push({ x, v: l, anchor: 'middle' });
     }
+  }
+
+  if (upto !== undefined) {
+    const keep = labels.filter((lb) => lb.x <= upto + 1e-9 && !(Math.abs(lb.x - upto) < 1e-9 && lb.anchor === 'start'));
+    labels.length = 0;
+    labels.push(...keep);
   }
 
   // overlay of the user's values (dashed)
@@ -154,11 +172,11 @@ function Panel({
   );
 }
 
-export function DiagramView({ sol, kps, units, vFlip, mBelow, overlay }: Props) {
+export function DiagramView({ sol, kps, units, vFlip, mBelow, overlay, upto }: Props) {
   return (
     <div className="diag-box">
-      <Panel kind="V" sol={sol} kps={kps} units={units} sign={vFlip ? -1 : 1} flip={false} overlay={overlay} />
-      <Panel kind="M" sol={sol} kps={kps} units={units} sign={1} flip={mBelow} overlay={overlay} />
+      <Panel kind="V" sol={sol} kps={kps} units={units} sign={vFlip ? -1 : 1} flip={false} overlay={overlay} upto={upto} />
+      <Panel kind="M" sol={sol} kps={kps} units={units} sign={1} flip={mBelow} overlay={overlay} upto={upto} />
     </div>
   );
 }

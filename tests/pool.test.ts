@@ -9,6 +9,7 @@
 import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import golden from './golden/golden.json';
+import workedBase from '../src/data/workedBase.json';
 import type { Exercise } from '../src/core/model';
 import { type AskType, type Level, generate } from '../src/core/generator';
 import { exerciseText } from '../src/core/text';
@@ -57,14 +58,15 @@ if (process.env.GEN_POOL === '1') {
     const ex = generate({ level, seed, ask }).exercise;
     return { ...ex, id: `pool-L${level}-${seed}`, origin: 'pool' };
   });
-  writeFileSync(POOL, JSON.stringify({ version: 1, exercises: [...fromGolden, ...generated] }, null, 1) + '\n');
+  const worked = (workedBase as unknown as { exercises: Exercise[] }).exercises.map((e): Exercise => ({ ...e, text: exerciseText(e) }));
+  writeFileSync(POOL, JSON.stringify({ version: 1, exercises: [...fromGolden, ...worked, ...generated] }, null, 1) + '\n');
 }
 
 describe('pool.json', () => {
   const pool = existsSync(POOL) ? (JSON.parse(readFileSync(POOL, 'utf8')) as { exercises: Exercise[] }).exercises : [];
 
-  it('has the golden cases and 30 generated exercises, with unique ids', () => {
-    expect(pool.length).toBe((golden as { cases: unknown[] }).cases.length + 30);
+  it('has the golden cases, the worked-example bases and 30 generated exercises, with unique ids', () => {
+    expect(pool.length).toBe((golden as { cases: unknown[] }).cases.length + (workedBase as { exercises: unknown[] }).exercises.length + 30);
     expect(new Set(pool.map((e) => e.id)).size).toBe(pool.length);
     for (const level of [1, 2, 3]) expect(pool.filter((e) => e.difficulty === level).length).toBeGreaterThanOrEqual(10);
   });
