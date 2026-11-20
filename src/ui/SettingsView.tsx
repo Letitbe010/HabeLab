@@ -54,6 +54,11 @@ export function SettingsView() {
           <p>
             <a href={hrefOf({ name: 'about' })}>{t('about.title')} →</a>
           </p>
+          {import.meta.env.DEV && (
+            <p>
+              <a href={hrefOf({ name: 'review' })}>{t('rev.title')} →</a>
+            </p>
+          )}
         </fieldset>
       </div>
     </section>

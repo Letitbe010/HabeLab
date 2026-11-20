@@ -3,9 +3,10 @@
  * reviews the texts (§12.3). No number is written by hand in the prose: examples use
  * {{…}} variables computed by the solver from a verified pool exercise.
  */
+import status from '../../data/review-status.json';
 import type { Topic } from './types';
 
-export const TOPICS: Topic[] = [
+const RAW_TOPICS: Topic[] = [
   {
     id: 'euskarriak',
     status: 'draft',
@@ -466,3 +467,9 @@ export const TOPICS: Topic[] = [
     ],
   },
 ];
+
+/** Topics with their review status from src/data/review-status.json (edited from #/berrikusi). */
+export const TOPICS: Topic[] = RAW_TOPICS.map((tp) => ({
+  ...tp,
+  status: (status.theory as Record<string, string>)[tp.id] === 'reviewed' ? 'reviewed' : 'draft',
+}));

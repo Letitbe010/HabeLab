@@ -3,6 +3,8 @@ import { execSync } from 'node:child_process';
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { fileURLToPath } from 'node:url';
+import { reviewPlugin } from './tools/review-plugin';
 import pkg from './package.json';
 
 function commit(): string {
@@ -26,6 +28,7 @@ export default defineConfig({
   },
   plugins: [
     react(),
+    reviewPlugin(fileURLToPath(new URL('.', import.meta.url))),
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',

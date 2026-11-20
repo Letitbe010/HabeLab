@@ -13,6 +13,7 @@ import { verifyBeam } from '../core/verify';
 import { fillTemplate, workedVars } from '../core/workedVars';
 import pool from '../data/pool.json';
 import worked from '../data/worked.json';
+import reviewStatus from '../data/review-status.json';
 import { useT } from '../i18n';
 import { BeamFigure } from './BeamFigure';
 import { displayUnits, num } from './format';
@@ -39,7 +40,10 @@ export interface WorkedItemData {
 }
 type StepKind = 'units' | 'fbd' | 'reactions' | 'segments' | 'table' | 'mmax' | 'ope';
 
-export const WORKED = (worked as unknown as { items: WorkedItemData[] }).items;
+/** Worked exercises with their review status from src/data/review-status.json (edited from #/berrikusi). */
+export const WORKED = (worked as unknown as { items: WorkedItemData[] }).items.map(
+  (w): WorkedItemData => ({ ...w, status: (reviewStatus.worked as Record<string, string>)[w.id] === 'reviewed' ? 'reviewed' : 'draft' }),
+);
 const EXERCISES = (pool as { exercises: Exercise[] }).exercises;
 
 export function WorkedList() {

@@ -9,6 +9,7 @@
  *   #/azterketa, #/azterketa/<seed>/<min>    → exam mode (start, running exam)
  *   #/aurrerapena                            → progress
  *   #/ezarpenak, #/honi-buruz                → settings, about
+ *   #/berrikusi                              → text review (development only)
  */
 import { useEffect, useState } from 'react';
 import type { AskType, Level } from '../core/generator';
@@ -24,6 +25,7 @@ export type Route =
   | { name: 'about' }
   | { name: 'progress' }
   | { name: 'exam' }
+  | { name: 'review' }
   | { name: 'examRun'; seed: number; minutes: number }
   | { name: 'worked' }
   | { name: 'workedItem'; id: string }
@@ -42,6 +44,7 @@ export function parseHash(hash: string): Route {
   if (p[0] === 'ezarpenak') return { name: 'settings' };
   if (p[0] === 'honi-buruz') return { name: 'about' };
   if (p[0] === 'aurrerapena') return { name: 'progress' };
+  if (p[0] === 'berrikusi') return { name: 'review' };
   if (p[0] === 'azterketa' && /^\d+$/.test(p[1] ?? '') && /^\d+$/.test(p[2] ?? '')) return { name: 'examRun', seed: Number(p[1]), minutes: Math.min(180, Math.max(1, Number(p[2]))) };
   if (p[0] === 'azterketa') return { name: 'exam' };
   if (p[0] === 'ebatziak') return p[1] ? { name: 'workedItem', id: p[1] } : { name: 'worked' };
@@ -65,6 +68,8 @@ export function hrefOf(r: Route): string {
       return '#/aurrerapena';
     case 'exam':
       return '#/azterketa';
+    case 'review':
+      return '#/berrikusi';
     case 'examRun':
       return `#/azterketa/${r.seed}/${r.minutes}`;
     case 'worked':

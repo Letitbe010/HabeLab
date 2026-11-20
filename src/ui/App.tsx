@@ -9,6 +9,7 @@ import { type Settings, SettingsContext, loadSettings, saveSettings } from './se
 import { SettingsView } from './SettingsView';
 import { WorkedItem, WorkedList } from './WorkedView';
 import { ExamRun, ExamStart } from './ExamView';
+import { ReviewPage } from './ReviewPage';
 
 // Theory (KaTeX) is loaded on demand: it is the heaviest part of the bundle.
 const TheoryList = lazy(() => import('./theory/TheoryView').then((m) => ({ default: m.TheoryList })));
@@ -146,6 +147,7 @@ export function App() {
               {route.name === 'about' && <AboutPage />}
               {route.name === 'progress' && <ProgressPage />}
               {route.name === 'exam' && <ExamStart />}
+              {route.name === 'review' && <ReviewPage />}
               {route.name === 'examRun' && <ExamRun key={`${route.seed}-${route.minutes}`} seed={route.seed} minutes={route.minutes} />}
               {route.name === 'worked' && <WorkedList />}
               {route.name === 'workedItem' && <WorkedItem key={route.id} id={route.id} />}

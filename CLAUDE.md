@@ -17,3 +17,4 @@ Espezifikazio osoa: `../HabeLab_argibideak.md`.
 - GitHub: biltegia sortu edo push egin aurretik, erabiltzaileari baieztapena eskatu. Despliegea Pages-era, CI berde badago soilik.
 - core/-k ez du UIren ezer inportatzen (ESLint-ek debekatzen du).
 - Kodea, iruzkinak eta commit-mezuak ingelesez. Commit-egilea: Letitbe010 noreply helbidearekin.
+- Testuen berrikuspena: `#/berrikusi` (garapen-moduan bakarrik, `npm run dev`). Egoerak `src/data/review-status.json`-en, oharrak `src/data/review-notes.json`-en. Pool-a birsortzean (GEN_POOL=1) ID berriak gehitu review-status.json-era (testak eskatzen du). Erabiltzailearen oharrak aplikatu eta zerrenda hustu.

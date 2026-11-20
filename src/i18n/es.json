@@ -283,5 +283,20 @@
   "exam.timedOut": "se ha acabado el tiempo",
   "exam.hide": "Ocultar la solución",
   "exam.again": "Otro examen",
-  "exam.heading": "Ejercicio {n} · nivel {level} · {ask}"
+  "exam.heading": "Ejercicio {n} · nivel {level} · {ask}",
+  "rev.title": "Para revisar",
+  "rev.lead": "Solo en modo desarrollo. Abre cada elemento, léelo y apruébalo o escribe una nota de corrección. Los cambios se guardan en los ficheros de datos.",
+  "rev.devOnly": "Esta pantalla solo está disponible en modo desarrollo (npm run dev).",
+  "rev.tab.theory": "Teoría",
+  "rev.tab.worked": "Resueltos",
+  "rev.tab.pool": "Ejercicios (enunciados)",
+  "rev.open": "Abrir",
+  "rev.approve": "Aprobar",
+  "rev.reopen": "Para revisar",
+  "rev.note": "Nota de corrección",
+  "rev.saveNote": "Guardar la nota",
+  "rev.saved": "Guardado.",
+  "rev.error": "No se ha podido guardar: {e}",
+  "rev.reviewed": "Revisado",
+  "rev.pending": "Para revisar"
 }
