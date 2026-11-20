@@ -172,5 +172,22 @@
   "wk.why.segments": "Tarte bakoitzean ebaki bat egiten da eta ezkerreko zatiaren oreka planteatzen da. Kontuan izan dV/dx = −q eta dM/dx = V: kargarik gabe V konstantea eta M lineala; karga uniformearekin V lineala eta M parabolikoa.",
   "wk.why.table": "Puntu kritiko bakoitzean ezkerreko eta eskuineko balioak idazten dira (V⁻, V⁺, M⁻, M⁺): V-k jauzi egiten du karga puntualetan eta erreakzioetan, eta M-k momentu puntualetan.",
   "wk.why.mmax": "M-ren mutur lokalak V = 0 den tokietan daude (dM/dx = V), edo karga puntual baten azpiko ertzean, V-k zeinua aldatzen duenean.",
-  "wk.why.ope": "Puntuazio-banaketak adierazten du non jarri arreta azterketan."
+  "wk.why.ope": "Puntuazio-banaketak adierazten du non jarri arreta azterketan.",
+  "th.lead": "Ez bakarrik nola kalkulatzen den, baizik eta zergatik. Gai bakoitzaren amaieran, lotutako ariketa ebatzi bat eta praktika.",
+  "th.ope": "OPEan",
+  "th.example": "Adibidea (ebazletik)",
+  "th.openExercise": "Ireki ariketa →",
+  "th.nowPractice": "Orain landu:",
+  "th.practiceLevel": "Praktika, {n}. maila",
+  "th.w.moving": "Karga mugikorra",
+  "th.w.position": "Kargaren posizioa",
+  "th.w.movingHint": "Mugitu karga: M_max kargaren azpian dago beti, eta handiena da karga erdian dagoenean (PL/4).",
+  "th.w.cut": "Ebaki-sekzioa",
+  "th.w.section": "Sekzioa",
+  "th.w.leftForces": "Ezkerreko indarrak",
+  "th.w.cutHint": "V(x) ezkerreko indarren batura da (gorantz +), eta M(x) haien momentua sekzioarekiko (erloju-orratzen noranzkoan +).",
+  "th.w.free": "Karga-editore askea",
+  "th.w.value": "Balioa",
+  "th.w.addLoad": "karga",
+  "th.w.invalid": "Habe hau ezin da ebatzi: begiratu luzera eta kargen posizioak (habearen barruan, x₁ < x₂)."
 }

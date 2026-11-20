@@ -223,3 +223,9 @@ svg .dval { font-size: 13px; fill: var(--ink); font-weight: 600; paint-order: st
 .fld.wrong select { border-color: var(--bad); background: var(--badbg); }
 .fld.missing select { border-color: var(--warn); background: var(--warnbg); }
 @media (max-width: 600px) { .seg-shapes { grid-column: 1 / -1; } .seg-shapes .fld, .seg-shapes select { width: 100%; } }
+
+/* theory */
+.th-table { border-collapse: collapse; font-size: 15px; margin: 6px 0; }
+.th-table td, .th-table th { border: 1px solid var(--line); padding: 5px 10px; text-align: left; }
+.th-table th { background: var(--soft); font-weight: 600; }
+.widget > b { display: block; margin-bottom: 4px; }

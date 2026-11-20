@@ -172,5 +172,22 @@
   "wk.why.segments": "En cada tramo se corta y se plantea el equilibrio de la parte izquierda. Recuerda dV/dx = −q y dM/dx = V: sin carga, V constante y M lineal; con carga uniforme, V lineal y M parabólico.",
   "wk.why.table": "En cada punto crítico se escriben los valores a izquierda y derecha (V⁻, V⁺, M⁻, M⁺): V salta en las cargas puntuales y reacciones, y M en los momentos puntuales.",
   "wk.why.mmax": "Los extremos locales de M están donde V = 0 (dM/dx = V), o en el pico bajo una carga puntual, donde V cambia de signo.",
-  "wk.why.ope": "El reparto de la puntuación indica dónde poner la atención en el examen."
+  "wk.why.ope": "El reparto de la puntuación indica dónde poner la atención en el examen.",
+  "th.lead": "No solo cómo se calcula, sino por qué. Al final de cada tema, un ejercicio resuelto relacionado y práctica.",
+  "th.ope": "En la OPE",
+  "th.example": "Ejemplo (del solucionador)",
+  "th.openExercise": "Abrir el ejercicio →",
+  "th.nowPractice": "Ahora practica:",
+  "th.practiceLevel": "Práctica, nivel {n}",
+  "th.w.moving": "Carga móvil",
+  "th.w.position": "Posición de la carga",
+  "th.w.movingHint": "Mueve la carga: M_máx está siempre bajo la carga, y es mayor cuando la carga está en el centro (PL/4).",
+  "th.w.cut": "Sección de corte",
+  "th.w.section": "Sección",
+  "th.w.leftForces": "Fuerzas a la izquierda",
+  "th.w.cutHint": "V(x) es la suma de las fuerzas de la izquierda (hacia arriba +) y M(x) su momento respecto a la sección (horario +).",
+  "th.w.free": "Editor libre de cargas",
+  "th.w.value": "Valor",
+  "th.w.addLoad": "carga",
+  "th.w.invalid": "Esta viga no se puede resolver: revisa la longitud y las posiciones de las cargas (dentro de la viga, x₁ < x₂)."
 }

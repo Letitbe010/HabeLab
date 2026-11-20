@@ -6,6 +6,7 @@ import { type Route, hrefOf, useRoute } from './router';
 import { type Settings, SettingsContext, loadSettings, saveSettings } from './settings';
 import { SettingsView } from './SettingsView';
 import { WorkedItem, WorkedList } from './WorkedView';
+import { TheoryList, TheoryTopic } from './theory/TheoryView';
 
 const LANG_KEY = 'habelab.lang';
 
@@ -18,14 +19,14 @@ function loadLang(): Lang {
 }
 
 const NAV: { key: string; route: Route; icon: string; section: string }[] = [
-  { key: 'nav.theory', route: { name: 'soon', section: 'teoria' }, icon: 'T', section: 'teoria' },
+  { key: 'nav.theory', route: { name: 'theory' }, icon: 'T', section: 'teoria' },
   { key: 'nav.worked', route: { name: 'worked' }, icon: 'E', section: 'ebatziak' },
   { key: 'nav.practice', route: { name: 'home' }, icon: 'P', section: 'praktika' },
   { key: 'nav.progress', route: { name: 'soon', section: 'aurrerapena' }, icon: 'A', section: 'aurrerapena' },
 ];
 
 const sectionOf = (r: Route): string =>
-  r.name === 'soon' ? r.section : r.name === 'settings' ? 'ezarpenak' : r.name === 'worked' || r.name === 'workedItem' ? 'ebatziak' : 'praktika';
+  r.name === 'soon' ? r.section : r.name === 'settings' ? 'ezarpenak' : r.name === 'worked' || r.name === 'workedItem' ? 'ebatziak' : r.name === 'theory' || r.name === 'theoryTopic' ? 'teoria' : 'praktika';
 
 export function App() {
   const [lang, setLang] = useState<Lang>(loadLang);
@@ -96,6 +97,8 @@ export function App() {
               {route.name === 'settings' && <SettingsView />}
               {route.name === 'worked' && <WorkedList />}
               {route.name === 'workedItem' && <WorkedItem key={route.id} id={route.id} />}
+              {route.name === 'theory' && <TheoryList />}
+              {route.name === 'theoryTopic' && <TheoryTopic key={route.id} id={route.id} />}
               {route.name === 'soon' && (
                 <section className="card">
                   <h1>{t(NAV.find((n) => n.section === route.section)?.key ?? 'nav.practice')}</h1>

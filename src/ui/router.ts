@@ -5,7 +5,8 @@
  *   #/praktika/pool/<id>                     → pool exercise
  *   #/ezarpenak                              → settings
  *   #/ebatziak, #/ebatziak/<id>              → worked exercises
- *   #/teoria, #/aurrerapena                  → sections of later phases
+ *   #/teoria, #/teoria/<id>                  → theory
+ *   #/aurrerapena                            → section of a later phase
  */
 import { useEffect, useState } from 'react';
 import type { AskType, Level } from '../core/generator';
@@ -19,7 +20,9 @@ export type Route =
   | { name: 'settings' }
   | { name: 'worked' }
   | { name: 'workedItem'; id: string }
-  | { name: 'soon'; section: 'teoria' | 'aurrerapena' };
+  | { name: 'theory' }
+  | { name: 'theoryTopic'; id: string }
+  | { name: 'soon'; section: 'aurrerapena' };
 
 const ASKS: AskChoice[] = ['any', 'diagrams', 'point', 'mmax', 'equations'];
 
@@ -30,7 +33,8 @@ export function parseHash(hash: string): Route {
     return { name: 'generated', level: Number(p[1]) as Level, ask: p[2] as AskChoice, seed: Number(p[4]) };
   if (p[0] === 'ezarpenak') return { name: 'settings' };
   if (p[0] === 'ebatziak') return p[1] ? { name: 'workedItem', id: p[1] } : { name: 'worked' };
-  if (p[0] === 'teoria' || p[0] === 'aurrerapena') return { name: 'soon', section: p[0] };
+  if (p[0] === 'teoria') return p[1] ? { name: 'theoryTopic', id: p[1] } : { name: 'theory' };
+  if (p[0] === 'aurrerapena') return { name: 'soon', section: p[0] };
   return { name: 'home' };
 }
 
@@ -46,6 +50,10 @@ export function hrefOf(r: Route): string {
       return '#/ebatziak';
     case 'workedItem':
       return `#/ebatziak/${encodeURIComponent(r.id)}`;
+    case 'theory':
+      return '#/teoria';
+    case 'theoryTopic':
+      return `#/teoria/${encodeURIComponent(r.id)}`;
     case 'soon':
       return `#/${r.section}`;
     default:

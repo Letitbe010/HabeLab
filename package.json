@@ -17,6 +17,8 @@
     "oracle:py": "python tools/oracle/beams.py tools/oracle/out/oracle.json tests/golden/golden.json src/data/pool.json tests/oracle/random-beams.json"
   },
   "dependencies": {
+    "@types/katex": "0.16.7",
+    "katex": "0.16.11",
     "react": "18.3.1",
     "react-dom": "18.3.1"
   },
