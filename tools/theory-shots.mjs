@@ -17,6 +17,7 @@ for (const [w, h] of [
   await p.goto(base + '#/teoria/euskarriak');
   await p.locator('.sup-grid svg').first().waitFor();
   await p.locator('.sup-grid').screenshot({ path: `${out}/${w}_supports.png` });
+  await p.locator('.rot-grid').screenshot({ path: `${out}/${w}_rotation.png` });
   const ex = p.locator('.example');
   for (let i = 0; i < (await ex.count()); i++) await ex.nth(i).screenshot({ path: `${out}/${w}_fbd_${i + 1}.png` });
   await p.goto(base + '#/teoria/ardatzak');

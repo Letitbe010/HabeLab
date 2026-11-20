@@ -261,5 +261,8 @@
   "th.shaft.mech": "Ardatza errodamenduetan (irudi mekanikoa)",
   "th.shaft.model": "Habe-eredua",
   "th.shaft.gear": "engranajea",
-  "th.shaft.pulley": "polea"
+  "th.shaft.pulley": "polea",
+  "th.rot.simple": "Bi euskarri: muturretako sekzioak θ biratzen dira. Euskarriek uzten dute: ez dago momentu-erreakziorik.",
+  "th.rot.cant": "Konsola: landaketako sekzioa ezin da biratu (θ = 0), eta horretarako M_A agertzen da.",
+  "th.rot.torsion": "Bihurdura: ardatza bere ardatz luzetarakoaren inguruan bihurritzen da (φ), T-ren eraginez. Ez da θ bera."
 }

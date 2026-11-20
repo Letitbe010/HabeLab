@@ -24,6 +24,8 @@ export type Block =
   | { t: 'widget'; w: WidgetId }
   /** the three supports, each drawn with its unknown reactions (Rx, Ry, M) */
   | { t: 'supports' }
+  /** 3D drawing: bending rotation θ of the sections (simple beam, cantilever) vs torsion φ */
+  | { t: 'rotation' }
   /** free-body diagram of a pool exercise with the unknown reactions, the equilibrium
    *  equations written symbolically (LaTeX) and a text with the solver's values */
   | ({ t: 'fbd'; pool: string; tex: string[] } & Bi)

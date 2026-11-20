@@ -261,5 +261,8 @@
   "th.shaft.mech": "Eje sobre rodamientos (figura mecánica)",
   "th.shaft.model": "Modelo de viga",
   "th.shaft.gear": "engranaje",
-  "th.shaft.pulley": "polea"
+  "th.shaft.pulley": "polea",
+  "th.rot.simple": "Dos apoyos: las secciones extremas giran θ. Los apoyos lo permiten: no hay momento de reacción.",
+  "th.rot.cant": "Voladizo empotrado: la sección del empotramiento no puede girar (θ = 0), y para ello aparece M_A.",
+  "th.rot.torsion": "Torsión: el eje se retuerce alrededor de su eje longitudinal (φ), por efecto de T. No es el mismo giro que θ."
 }

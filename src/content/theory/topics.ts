@@ -13,8 +13,8 @@ export const TOPICS: Topic[] = [
     blocks: [
       {
         t: 'p',
-        eu: 'Euskarri batek habearen mugimendu batzuk eragozten ditu, eta eragotzitako mugimendu bakoitzeko erreakzio bat sortzen du: desplazamendu horizontala eragozteak Rx sortzen du, bertikala eragozteak Ry, eta biraketa eragozteak M. Horregatik, euskarri-motak zehazten du zenbat ezezagun dauden.',
-        es: 'Un apoyo impide algunos movimientos de la viga, y por cada movimiento impedido aparece una reacción: impedir el desplazamiento horizontal da Rx, el vertical da Ry, y el giro da M. Por eso el tipo de apoyo determina cuántas incógnitas hay.',
+        eu: 'Euskarri batek habearen mugimendu batzuk eragozten ditu, eta eragotzitako mugimendu bakoitzeko erreakzio bat sortzen du: desplazamendu horizontala eragozteak Rx sortzen du, bertikala eragozteak Ry, eta sekzioaren biraketa (makurdura-planoko biraketa, θ) eragozteak M. Horregatik, euskarri-motak zehazten du zenbat ezezagun dauden.',
+        es: 'Un apoyo impide algunos movimientos de la viga, y por cada movimiento impedido aparece una reacción: impedir el desplazamiento horizontal da Rx, el vertical da Ry, y el giro de la sección (giro en el plano de flexión, θ) da M. Por eso el tipo de apoyo determina cuántas incógnitas hay.',
       },
       { t: 'supports' },
       {
@@ -37,7 +37,7 @@ export const TOPICS: Topic[] = [
           ],
           [
             { eu: 'Landaketa', es: 'Empotramiento' },
-            { eu: 'bi desplazamenduak eta biraketa', es: 'los dos desplazamientos y el giro' },
+            { eu: 'bi desplazamenduak eta biraketa (θ)', es: 'los dos desplazamientos y el giro (θ)' },
             { eu: 'Rx, Ry eta M', es: 'Rx, Ry y M' },
           ],
         ],
@@ -50,8 +50,20 @@ export const TOPICS: Topic[] = [
       {
         t: 'note',
         kind: 'careful',
-        eu: 'Bi euskarri mugikorrekin habea ezegonkorra da: ezerk ez du eragozten desplazamendu horizontala. Bi euskarri finkorekin, berriz, hiperestatikoa da (ezezagun bat soberan). Eta ez nahastu: «euskarri finkoa» (apoyo fijo) artikulazio bat da, eta biraketa onartzen du; landaketak ez.',
-        es: 'Con dos apoyos móviles la viga es inestable: nada impide el desplazamiento horizontal. Con dos apoyos fijos, en cambio, es hiperestática (sobra una incógnita). Y no confundir: un «apoyo fijo» es una articulación y permite el giro; el empotramiento no.',
+        eu: 'Bi euskarri mugikorrekin habea ezegonkorra da: ezerk ez du eragozten desplazamendu horizontala. Bi euskarri finkorekin, berriz, hiperestatikoa da (ezezagun bat soberan). Eta ez nahastu: «euskarri finkoa» (apoyo fijo) artikulazio bat da, eta biraketa (θ) onartzen du; landaketak ez.',
+        es: 'Con dos apoyos móviles la viga es inestable: nada impide el desplazamiento horizontal. Con dos apoyos fijos, en cambio, es hiperestática (sobra una incógnita). Y no confundir: un «apoyo fijo» es una articulación y permite el giro (θ); el empotramiento no.',
+      },
+      {
+        t: 'p',
+        eu: 'Zer biraketa da hori? Habea okertzean, sekzio bakoitza deformatutako ardatzarekiko perpendikular mantentzen da, eta, horregatik, inklinatu egiten da: hori da makurdura-planoko biraketa (θ), irudiaren planoan gertatzen dena. Euskarri finkoak eta mugikorrak biraketa hori onartzen dute, eta ez dute momenturik sortzen. Landaketak eragotzi egiten du (θ = 0), eta horretarako M_A momentua egin behar du.',
+        es: '¿Qué giro es ese? Al flectar la viga, cada sección se mantiene perpendicular al eje deformado y, por eso, se inclina: es el giro en el plano de flexión (θ), en el plano del dibujo. Los apoyos fijos y móviles permiten ese giro y no producen momento. El empotramiento lo impide (θ = 0) y para ello tiene que ejercer el momento M_A.',
+      },
+      { t: 'rotation' },
+      {
+        t: 'note',
+        kind: 'careful',
+        eu: 'Ez nahastu bihurdurarekin (tortsioa): ardatzaren ardatz luzetarakoaren inguruko biraketa da (φ), momentu bihurtzaile batek (T) sortua. Plano-habeen ariketa hauetan ez da agertzen; makurdura-planoko biraketa bakarrik (θ).',
+        es: 'No confundir con la torsión: es el giro alrededor del eje longitudinal (φ), producido por un momento torsor (T). En estos ejercicios de vigas planas no aparece; solo el giro en el plano de flexión (θ).',
       },
       {
         t: 'p',
@@ -108,19 +120,21 @@ export const TOPICS: Topic[] = [
         t: 'list',
         eu: [
           'Ardatzaren lerro geometrikoa da habea; distantziak errodamenduen eta engranaje/polearen erdiko planoen artean neurtzen dira.',
-          'Errodamendu bakoitza euskarri sinple bat da, haren erdiko planoan. Ez du biraketa eragozten (bola-errodamendu zurrunek angelu txiki bat onartzen dute): ez da landaketa.',
+          'Errodamendu bakoitza euskarri sinple bat da, haren erdiko planoan. Ez du makurdura-planoko biraketa (θ) eragozten (bola-errodamendu zurrunek angelu txiki bat onartzen dute): ez da landaketa.',
           'Errodamendu bat finkoa da (kokatzailea: karga axiala hartzen du) eta bestea librea (dilatazio termikoa onartzen du): euskarri finkoa + mugikorra, habe isostatikoa.',
           'Engranaje edo polea baten indarra karga puntual bat da, haren erdiko planoan. Polea batean, uhalaren bi adarren tiraketen batura.',
           'Errodamenduetatik kanpo dagoen polea edo engranaje batek hegal bat sortzen du.',
           'Indarrek bi planotan osagaiak badituzte (indar tangentziala eta erradiala, adibidez), plano bakoitza bereiz ebazten da.',
+          'Errodamenduek ez dute bihurdura eusten: ardatzak libre biratzen du haietan. Momentu bihurtzailea (T) engranajeak, poleak edo akoplamenduak transmititzen dute, eta makurdura-kalkulutik bereiz aztertzen da.',
         ],
         es: [
           'La viga es la línea media del eje; las distancias se miden entre los planos medios de los rodamientos y del engranaje o la polea.',
-          'Cada rodamiento es un apoyo simple en su plano medio. No impide el giro (los rodamientos rígidos de bolas admiten un pequeño ángulo): no es un empotramiento.',
+          'Cada rodamiento es un apoyo simple en su plano medio. No impide el giro en el plano de flexión (θ) (los rodamientos rígidos de bolas admiten un pequeño ángulo): no es un empotramiento.',
           'Un rodamiento es fijo (posicionador: toma la carga axial) y el otro libre (admite la dilatación térmica): apoyo fijo + móvil, viga isostática.',
           'La fuerza de un engranaje o de una polea es una carga puntual en su plano medio. En una polea, la suma de los tiros de los dos ramales de la correa.',
           'Una polea o un engranaje fuera de los rodamientos produce un voladizo.',
           'Si las fuerzas tienen componentes en dos planos (fuerza tangencial y radial, por ejemplo), cada plano se resuelve por separado.',
+          'Los rodamientos no resisten la torsión: el eje gira libremente en ellos. El momento torsor (T) lo transmiten el engranaje, la polea o el acoplamiento, y se estudia aparte del cálculo a flexión.',
         ],
       },
       {

@@ -16,6 +16,7 @@ import { WORKED } from '../WorkedView';
 import { TheoryWidget } from './widgets';
 import { BeamFigure } from '../BeamFigure';
 import { ShaftFigure } from './ShaftFigure';
+import { RotationFigure } from './RotationFigure';
 
 /** one support alone on a short beam, to draw it with its unknown reactions */
 const SUPPORT_DEMOS: { type: 'roller' | 'pin' | 'fixed'; key: string }[] = [
@@ -99,6 +100,8 @@ function BlockView({ b }: { b: Block }) {
     }
     case 'widget':
       return <TheoryWidget w={b.w} />;
+    case 'rotation':
+      return <RotationFigure />;
     case 'supports':
       return (
         <div className="sup-grid">

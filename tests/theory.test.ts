@@ -53,7 +53,7 @@ describe('theory content (spec §12)', () => {
         const stripped = s
           .replace(/\{\{\w+\}\}/g, '')
           .replace(/\b(19|20)\d{2}(?!\d)/g, '') // years of real exams
-          .replace(/(?:\b[VMqR]x?|M₀)\s?[=<>]\s?0\b/g, '') // conditions: V = 0, M > 0, Rx = 0, M₀ > 0
+          .replace(/(?:\b[VMqR]x?|M₀|θ)\s?[=<>]\s?0\b/g, '') // conditions: V = 0, M > 0, Rx = 0, M₀ > 0, θ = 0
           .replace(/\b2?[aL]\/[234]\b|qL²\/[28]|PL\/4|Pab\/L/g, ''); // symbolic formulas
         expect(stripped, s).not.toMatch(/\d/);
       }
