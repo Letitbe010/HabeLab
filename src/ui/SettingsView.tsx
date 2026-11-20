@@ -1,5 +1,7 @@
 import { useT } from '../i18n';
 import { useSettings } from './settings';
+import { ThemeChoice } from './pages';
+import { hrefOf } from './router';
 
 const COMMIT = ((import.meta.env.VITE_COMMIT as string | undefined) ?? 'dev').slice(0, 7);
 
@@ -39,6 +41,10 @@ export function SettingsView() {
           {radio('dims', 'cumulative', t('set.dims.cumulative'))}
         </fieldset>
         <fieldset>
+          <legend>{t('set.theme')}</legend>
+          <ThemeChoice />
+        </fieldset>
+        <fieldset>
           <legend>{t('set.tol')}</legend>
           <p>{t('set.tolText')}</p>
         </fieldset>
@@ -46,7 +52,7 @@ export function SettingsView() {
           <legend>{t('set.about')}</legend>
           <p>{t('set.version', { v: __APP_VERSION__, c: COMMIT })}</p>
           <p>
-            <a href="https://letitbe010.github.io/HabeLab/">https://letitbe010.github.io/HabeLab/</a>
+            <a href={hrefOf({ name: 'about' })}>{t('about.title')} →</a>
           </p>
         </fieldset>
       </div>

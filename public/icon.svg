@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0f1b2d"/>
+  <!-- a simply supported beam with a point load, and its bending-moment diagram -->
+  <line x1="256" y1="70" x2="256" y2="150" stroke="#ff8a8a" stroke-width="18" stroke-linecap="round"/>
+  <path d="M232 140 L256 172 L280 140 Z" fill="#ff8a8a"/>
+  <rect x="80" y="176" width="352" height="34" rx="6" fill="#e7ecf3"/>
+  <path d="M104 210 L80 252 L128 252 Z" fill="#e7ecf3"/>
+  <path d="M408 210 L384 246 L432 246 Z" fill="#e7ecf3"/>
+  <circle cx="396" cy="254" r="7" fill="#e7ecf3"/>
+  <circle cx="420" cy="254" r="7" fill="#e7ecf3"/>
+  <path d="M96 300 L256 430 L416 300 Z" fill="#d97706" opacity="0.35"/>
+  <path d="M96 300 L256 430 L416 300" fill="none" stroke="#ffb347" stroke-width="16" stroke-linejoin="round"/>
+  <line x1="96" y1="300" x2="416" y2="300" stroke="#e7ecf3" stroke-width="8"/>
+</svg>

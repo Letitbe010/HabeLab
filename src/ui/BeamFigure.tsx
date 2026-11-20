@@ -128,7 +128,7 @@ export function BeamFigure({ ex, dims = 'both', reactions, units }: Props) {
         })}
 
         {/* beam */}
-        <rect x={sx(0)} y={BEAM_Y - 6} width={span} height={12} fill="#dfe5ee" stroke="var(--ink)" strokeWidth={1.5} rx={2} />
+        <rect x={sx(0)} y={BEAM_Y - 6} width={span} height={12} fill="var(--soft)" stroke="var(--ink)" strokeWidth={1.5} rx={2} />
 
         {/* supports */}
         {ex.beam.supports.map((s, i) => {
@@ -154,11 +154,11 @@ export function BeamFigure({ ex, dims = 'both', reactions, units }: Props) {
           const groundY = s.type === 'pin' ? top + triH + 3 : top + triH + 11;
           return (
             <g key={`s${i}`} opacity={faded}>
-              <path d={`M${X} ${top} L${X - 13} ${top + triH} L${X + 13} ${top + triH} Z`} fill="#fff" stroke="var(--ink)" strokeWidth={1.6} />
+              <path d={`M${X} ${top} L${X - 13} ${top + triH} L${X + 13} ${top + triH} Z`} fill="var(--surface)" stroke="var(--ink)" strokeWidth={1.6} />
               {s.type === 'roller' && (
                 <>
-                  <circle cx={X - 6} cy={top + triH + 5} r={4} fill="#fff" stroke="var(--ink)" strokeWidth={1.3} />
-                  <circle cx={X + 6} cy={top + triH + 5} r={4} fill="#fff" stroke="var(--ink)" strokeWidth={1.3} />
+                  <circle cx={X - 6} cy={top + triH + 5} r={4} fill="var(--surface)" stroke="var(--ink)" strokeWidth={1.3} />
+                  <circle cx={X + 6} cy={top + triH + 5} r={4} fill="var(--surface)" stroke="var(--ink)" strokeWidth={1.3} />
                 </>
               )}
               <line x1={X - 18} y1={groundY} x2={X + 18} y2={groundY} stroke="var(--ink)" strokeWidth={1.6} />

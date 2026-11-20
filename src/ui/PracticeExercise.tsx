@@ -4,6 +4,7 @@ import type { Exercise } from '../core/model';
 import { type GradeResult, type Item, type ModeAAnswer, grade } from '../core/grader';
 import { type BResult, type ModeBAnswer, gradeB } from '../core/diagramGrader';
 import { DiagramEditor } from './DiagramEditor';
+import { recordAttempt } from './progress';
 import { type Hypothesis, diagnose } from '../core/diagnosis';
 import { formatSmart, gValue } from '../core/units';
 import { generate } from '../core/generator';
@@ -44,6 +45,7 @@ export function PracticeExercise({ source }: { source: Source }) {
   });
   const [result, setResult] = useState<GradeResult | BResult | null>(null);
   const [hyps, setHyps] = useState<Hypothesis[]>([]);
+  const [startedAt] = useState(() => Date.now());
   const [mode, setMode] = useState<'A' | 'B'>(() => (loadJSON<string>('habelab.mode') === 'B' ? 'B' : 'A'));
   const [ansB, setAnsB] = useState<ModeBAnswer>(() => {
     const saved = loadJSON<ModeBAnswer>(`${storeKey}.B`);
@@ -81,7 +83,22 @@ export function PracticeExercise({ source }: { source: Source }) {
     const asA: ModeAAnswer = useB
       ? { forceUnit: ans.forceUnit, momentUnit: ans.momentUnit, reactions: ans.reactions, points: ansB.nodes.map((n) => ({ x: n.x, Vl: n.Vl, Vr: n.Vr, Ml: n.Ml, Mr: n.Mr })) }
       : ans;
-    setHyps(r.invalid || r.incomplete || r.score >= 10 ? [] : diagnose(ex, asA, opts));
+    const h = r.invalid || r.incomplete || r.score >= 10 ? [] : diagnose(ex, asA, opts);
+    setHyps(h);
+    // §11.1.4: history and statistics (an attempt that is invalid or incomplete is not counted, §8.1.4)
+    if (!r.invalid && !r.incomplete) {
+      recordAttempt({
+        ts: Date.now(),
+        exercise: ex.id,
+        level: ex.difficulty,
+        ask: ex.ask.pointValues?.length ? 'point' : ex.ask.mmax ? 'mmax' : ex.ask.equations ? 'equations' : 'diagrams',
+        mode: useB ? 'B' : 'A',
+        score: r.score,
+        parts: Object.fromEntries(r.parts.map((p) => [p.key, p.ratio])),
+        diagnoses: h.map((x) => x.id),
+        seconds: Math.round((Date.now() - startedAt) / 1000),
+      });
+    }
   };
   const switchMode = (m: 'A' | 'B') => {
     setMode(m);
@@ -148,6 +165,12 @@ export function PracticeExercise({ source }: { source: Source }) {
           {source.kind === 'generated' ? t('ex.seed', { seed: source.seed }) : ex.sourceNote ? t('ex.source', { source: ex.sourceNote.split(' / ')[lang === 'es' ? 1 : 0] ?? ex.sourceNote }) : ''}
         </span>
       </div>
+      <h1 className="ex-title">
+        {t('ex.title', {
+          level: ex.difficulty,
+          ask: t(`home.ask.${ex.ask.pointValues?.length ? 'point' : ex.ask.mmax ? 'mmax' : ex.ask.equations ? 'equations' : 'diagrams'}`),
+        })}
+      </h1>
       <ol className="stepper" aria-label="steps">
         {STEP_KEYS.map((k, i) => (
           <li key={k} className={i + 1 === step ? 'on' : i + 1 < step ? 'done' : ''}>

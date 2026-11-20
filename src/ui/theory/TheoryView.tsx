@@ -1,7 +1,8 @@
 /** Theory section (spec §12): list of topics and one topic with its blocks (same model as KateLab). */
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
+import { markTheory } from '../progress';
 import { TOPICS } from '../../content/theory/topics';
 import type { Block } from '../../content/theory/types';
 import type { Exercise } from '../../core/model';
@@ -124,6 +125,9 @@ export function TheoryTopic({ id }: { id: string }) {
   const { t, lang } = useT();
   const i = TOPICS.findIndex((x) => x.id === id);
   const tp = TOPICS[i];
+  useEffect(() => {
+    if (tp) markTheory(tp.id);
+  }, [tp]);
   if (!tp) return <section className="card">404</section>;
   const prev = TOPICS[i - 1];
   const next = TOPICS[i + 1];

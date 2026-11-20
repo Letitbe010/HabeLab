@@ -3,7 +3,8 @@
  * three layers: what is done (computed by the solver), why (reasoning) and, where useful,
  * careful! (a typical mistake). All numbers come from the solver ({{variables}}).
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
+import { markWorked } from './progress';
 import type { Exercise } from '../core/model';
 import { keyPoints } from '../core/keyPoints';
 import { renderText } from '../core/text';
@@ -127,6 +128,10 @@ export function WorkedItem({ id }: { id: string }) {
   const ex = w ? EXERCISES.find((e) => e.id === w.pool) : undefined;
   const [shown, setShown] = useState(1);
   const check = useMemo(() => (ex ? verifyBeam(exerciseToBeam(ex, settings.g)) : null), [ex, settings.g]);
+  const total = check?.a ? (ex!.loads.some((l) => l.unit.startsWith('kg')) ? 1 : 0) + 4 + check.a.segments.length + (w?.ope ? 1 : 0) : 99;
+  useEffect(() => {
+    if (w && shown >= total) markWorked(w.id);
+  }, [w, shown, total]);
   if (!w || !ex || !check) return <section className="card">404</section>;
   if (!check.ok || !check.a) return <section className="card note warn">{t('ex.invalidExercise')}</section>;
   const sol = check.a;
